@@ -12,6 +12,7 @@
 	window.__RISEUB_STATIC = true;
 	window.__RISEUB_SKIP_GATE = true;
 
+	if (window.__RISEUB_SRCDOC) return;
 	if (window.__RISEUB_EMBED_TARGET) return;
 
 	var KEY = [215, 109, 196, 84, 233, 61, 142, 52, 178, 73, 201, 25];

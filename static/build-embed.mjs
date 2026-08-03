@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Build RiseUB SVG embed launcher (Arctic-style → iframe static/riseub/index.html).
+ * Build RiseUB SVG embed launcher (Arctic srcdoc + base64 index.html + CDN base href).
  */
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomBytes } from "node:crypto";
@@ -11,7 +11,6 @@ import { encodeRv3 } from "./rv3-lib.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CDN_DIR = join(__dirname, "riseub");
-const EMBED_VERSION = "riseub-embed-v4";
 
 const DEFAULT_GITHUB = "saturn-dev/risegit";
 const CDN_SUBPATH = "static/riseub";
@@ -47,7 +46,7 @@ function normalize(input) {
 }
 
 function printHelp() {
-	console.log(`Build RiseUB SVG embed (Arctic-style launcher → jsDelivr static/riseub).
+	console.log(`Build RiseUB SVG embed (Arctic srcdoc method).
 
 Usage:
   node static/build-static.mjs
@@ -73,41 +72,41 @@ function gitCommit() {
 	}
 }
 
-function buildSvg({ origins, fallbackHash }) {
+function loadIndexHtmlB64() {
+	const indexPath = join(CDN_DIR, "index.html");
+	if (!existsSync(indexPath)) {
+		console.error("Missing static/riseub/index.html — run sync-public.mjs first");
+		process.exit(1);
+	}
+	return Buffer.from(readFileSync(indexPath, "utf8"), "utf8").toString("base64");
+}
+
+function buildSvg({ origins, fallbackHash, htmlB64 }) {
 	const originsJson = JSON.stringify(origins);
-	return `<!-- ${EMBED_VERSION} -->
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="position:fixed;top:0;left:0">
+	const b64Json = JSON.stringify(htmlB64);
+	return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="position:fixed;top:0;left:0">
   <foreignObject x="0" y="0" width="100%" height="100%">
     <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0b1118">
       <iframe id="riseub-embed-frame" allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture" style="position:fixed;inset:0;width:100%;height:100%;border:none"></iframe>
       <script><![CDATA[
         (function(){
+          function dec(b){var s=atob(b);var a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return new TextDecoder().decode(a);}
           var frame=document.getElementById("riseub-embed-frame");
+          var html=dec(${b64Json});
+          var base=new URL("./",location.href).href.replace(/\\/+$/,"");
           var origins=${originsJson};
           var p=new URLSearchParams(location.search);
           var h=location.hash.slice(1)||p.get("h")||${JSON.stringify(fallbackHash || "")};
           function targetOf(v){if(!v)return "";if(v.slice(0,4)==="aw1."){try{var q=v.slice(4).replace(/-/g,"+").replace(/_/g,"/"),s=atob(q+"=".repeat((4-q.length%4)%4)),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return new TextDecoder().decode(a)}catch(e){return ""}}if(v.slice(0,4)!=="rv3."){try{return decodeURIComponent(v)}catch(e){return v}}try{var q=v.slice(4),k=[215,109,196,84,233,61,142,52,178,73,201,25],a=new Uint8Array(q.length/2);if(!/^(?:[0-9a-f]{2})+$/i.test(q))return "";for(var i=0;i<a.length;i++)a[i]=parseInt(q.slice(i*2,i*2+2),16)^(k[i%k.length]^((41+(i%k.length)*17)&255))^((41+i*29)&255);return new TextDecoder("utf-8",{fatal:true}).decode(a)}catch(e){return ""}}
-          var io=p.get("$io")||p.get("url")||"";
+          var target=h?targetOf(h):(p.get("$io")||p.get("url")||"");
           window.addEventListener("message",function(e){if(frame&&e.source===frame.contentWindow&&window.parent!==window){window.parent.postMessage(e.data,"*");}});
-          function launch(origin){
+          if(origins.indexOf(base)<0)origins.push(base);
+          function fallback(origin){
             origin=origin.replace(/\\/+$/,"");
-            var qs="static=1";
-            if(io) qs+="&$io="+encodeURIComponent(io);
-            else if(h) qs+="&h="+encodeURIComponent(h);
-            var hashPart=(!io&&h)?("#"+h):"";
-            frame.src=origin+"/index.html?"+qs+hashPart;
+            var head='<base href="'+origin+'/"/>'+'<'+'script>window.__RISEUB_STATIC=true;window.__RISEUB_SKIP_GATE=true;window.__RISEUB_SRCDOC=true;window.__RISEUB_CDN_BASE="'+origin+'/";window.__RISEUB_EMBED_TARGET='+JSON.stringify(target)+';<'+'/script>';
+            frame.srcdoc=html.replace("<head>","<head>"+head);
           }
-          launch(origins[0]);
-          function tryOrigin(i){
-            if(i>=origins.length)return;
-            var origin=origins[i].replace(/\\/+$/,"");
-            var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);
-            fetch(origin+"/index.html?static=1&z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){
-              clearTimeout(t);
-              if(r.ok)launch(origin);
-              else tryOrigin(i+1);
-            }).catch(function(){clearTimeout(t);tryOrigin(i+1);});
-          }
+          function tryOrigin(i){if(i>=origins.length){fallback(base);return}var origin=origins[i].replace(/\\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);fetch(origin+"/js/app.js?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){fallback(origin)}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
           tryOrigin(0);
         })();
       ]]></script>
@@ -126,7 +125,8 @@ function randId(len = 8) {
 const opts = parseArgs(process.argv);
 const hash = opts.target ? encodeRv3(opts.target) : "";
 const origins = cdnOrigins(opts.github, opts.branch);
-const svg = buildSvg({ origins, fallbackHash: hash });
+const htmlB64 = loadIndexHtmlB64();
+const svg = buildSvg({ origins, fallbackHash: hash, htmlB64 });
 const commit = gitCommit();
 
 mkdirSync(dirname(opts.output), { recursive: true });
@@ -142,7 +142,7 @@ if (hash) {
 	console.log(`Wrote ${fLauncher}`);
 }
 
-console.log(`Wrote ${opts.output}`);
+console.log(`Wrote ${opts.output} (${(svg.length / 1024).toFixed(1)} KB)`);
 console.log(`Wrote ${join(CDN_DIR, "embed.svg")}`);
 if (opts.target) console.log(`Target: ${opts.target}`);
 if (hash) console.log(`Hash:   ${hash}`);
@@ -150,7 +150,6 @@ if (hash) console.log(`Hash:   ${hash}`);
 const repoBase = origins[0].replace(/\/static\/riseub$/, "");
 console.log(`\nUse these URLs (NOT index.html directly):`);
 console.log(`  ${origins[0]}/embed.svg`);
-console.log(`  ${repoBase}/static/riseub/embed.svg`);
 console.log(`  https://cdn.jsdelivr.net/gh/${opts.github}@${commit}/static/riseub/embed.svg`);
 if (opts.target) {
 	console.log(`  ${origins[0]}/embed.svg?$io=${encodeURIComponent(opts.target)}`);

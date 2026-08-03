@@ -1,5 +1,6 @@
 async function initBootstrap() {
-	const base = new URL("./vendor/", location.href).href;
+	const root = (window.__RISEUB_CDN_BASE || new URL("./", location.href).href).replace(/\/?$/, "/");
+	const base = root + "vendor/";
 
 	function loadScript(src) {
 		return new Promise((resolve, reject) => {
@@ -18,7 +19,7 @@ async function initBootstrap() {
 
 	const wisp = await window.RiseUBWisp.resolve();
 
-	const reg = await navigator.serviceWorker.register(new URL("./sw.js", location.href).href, {
+	const reg = await navigator.serviceWorker.register(root + "sw.js", {
 		type: "classic",
 		updateViaCache: "none",
 	});
