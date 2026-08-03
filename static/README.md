@@ -2,35 +2,29 @@
 
 **Do NOT open `index.html` directly** — jsDelivr/Wayground need the **SVG embed launcher** (same as Arctic).
 
-## Correct URLs
+## Correct URL (opens RiseUB — no external site)
 
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg?$io=https%3A%2F%2Froblox.com
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg
 ```
 
-Or from the riseub folder:
+Optional: open a specific site on boot:
 
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/riseub/embed.svg?$io=https%3A%2F%2Froblox.com
-```
-
-With hash:
-
-```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg#rv3.bf6598f86ac3f94f65d226bb099a52b8122d1ca7016c92
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg?$io=https%3A%2F%2Fexample.com
 ```
 
 ## How it works (Arctic method)
 
 1. `embed.svg` loads on Wayground/jsDelivr
-2. SVG probes CDN, then sets `iframe.src` → `index.html?static=1&$io=…`
+2. SVG probes CDN, then sets `iframe.src` → `index.html?static=1`
 3. Full RiseUB app runs inside the iframe (modules, CSS, settings all work)
 4. Public wisp servers handle proxying — no VPS
 
 ## Build & push
 
 ```bash
-node static/build-static.mjs --target https://roblox.com
+node static/build-static.mjs
 git add static/
 git commit -m "Update embed launcher"
 git push

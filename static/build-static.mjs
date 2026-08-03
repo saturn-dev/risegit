@@ -15,14 +15,16 @@ function run(script, args = []) {
 }
 
 const targetIdx = process.argv.indexOf("--target");
-const target = targetIdx >= 0 ? process.argv[targetIdx + 1] : "https://www.roblox.com/";
+const target = targetIdx >= 0 ? process.argv[targetIdx + 1] : "";
 
 run("sync-public.mjs");
 run("copy-vendor.mjs");
-run("build-embed.mjs", ["--target", target, ...process.argv.slice(2).filter((a, i, arr) => {
+const embedArgs = ["--github", "saturn-dev/risegit", ...process.argv.slice(2).filter((a, i, arr) => {
 	if (a === "--target") return false;
 	if (i > 0 && arr[i - 1] === "--target") return false;
 	return a !== "build-static.mjs";
-})]);
+})];
+if (target) embedArgs.push("--target", target);
+run("build-embed.mjs", embedArgs);
 
 console.log("\nDone. Push static/riseub/ and static/embed.svg to GitHub.");

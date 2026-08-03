@@ -48,8 +48,8 @@ function printHelp() {
 	console.log(`Build RiseUB SVG embed (thin launcher → jsDelivr index.html).
 
 Usage:
-  node static/build-static.mjs --target https://roblox.com
-  node static/build-embed.mjs [options]
+  node static/build-static.mjs
+  node static/build-embed.mjs [--target https://example.com]
 `);
 }
 
@@ -72,7 +72,6 @@ function buildSvg({ origins, fallbackHash }) {
       <script><![CDATA[
         (function(){
           var frame=document.getElementById("riseub-embed-frame");
-          var base=new URL("./",location.href).href.replace(/\\/+$/,"");
           var origins=${originsJson};
           var p=new URLSearchParams(location.search);
           var h=location.hash.slice(1)||p.get("h")||${JSON.stringify(fallbackHash || "")};
@@ -80,17 +79,15 @@ function buildSvg({ origins, fallbackHash }) {
           var io=p.get("$io")||p.get("url")||"";
           var target=targetOf(h)||targetOf(io)||"";
           window.addEventListener("message",function(e){if(frame&&e.source===frame.contentWindow&&window.parent!==window){window.parent.postMessage(e.data,"*");}});
-          if(origins.indexOf(base)<0)origins.push(base);
           function launch(origin){
             origin=origin.replace(/\\/+$/,"");
             var qs="static=1";
             if(io) qs+="&$io="+encodeURIComponent(io);
             else if(h) qs+="&h="+encodeURIComponent(h);
-            else if(target) qs+="&$io="+encodeURIComponent(target);
             var hashPart=(!io&&h)?("#"+h):"";
             frame.src=origin+"/index.html?"+qs+hashPart;
           }
-          function tryOrigin(i){if(i>=origins.length){launch(base);return}var origin=origins[i].replace(/\\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);fetch(origin+"/embed.svg?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){launch(origin)}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
+          function tryOrigin(i){if(i>=origins.length){launch(origins[0]);return}var origin=origins[i].replace(/\\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);fetch(origin+"/embed.svg?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){launch(origin)}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
           tryOrigin(0);
         })();
       ]]></script>
@@ -132,6 +129,9 @@ if (hash) console.log(`Hash:   ${hash}`);
 
 const repoBase = origins[0].replace(/\/static\/riseub$/, "");
 console.log(`\nUse these URLs (NOT index.html directly):`);
-console.log(`  ${repoBase}/static/embed.svg?$io=${encodeURIComponent(opts.target || "https://roblox.com")}`);
-console.log(`  ${origins[0]}/embed.svg?$io=${encodeURIComponent(opts.target || "https://roblox.com")}`);
+console.log(`  ${repoBase}/static/embed.svg`);
+console.log(`  ${origins[0]}/embed.svg`);
+if (opts.target) {
+	console.log(`  ${repoBase}/static/embed.svg?$io=${encodeURIComponent(opts.target)}`);
+}
 if (hash) console.log(`  ${repoBase}/static/embed.svg#${hash}`);
