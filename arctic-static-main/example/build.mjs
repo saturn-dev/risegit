@@ -11,7 +11,7 @@ const GITHUB = "saturn-dev/risegit";
 const BRANCH = "main";
 const ROOT_SUBPATH = "arctic-static-main";
 const EXAMPLE_SUBPATH = `${ROOT_SUBPATH}/example`;
-const BUILD_VERSION = "v3.1";
+const BUILD_VERSION = "v3.2";
 
 function cdnOrigins() {
 	const base = `gh/${GITHUB}@${BRANCH}/${ROOT_SUBPATH}`;

@@ -182,7 +182,7 @@ function switchView(name) {
 	activeView = name;
 	if (window.__riseSwitchView) window.__riseSwitchView(name);
 	else {
-		Object.entries(views).forEach(([key, el) => {
+		Object.entries(views).forEach(([key, el]) => {
 			if (!el) return;
 			const on = key === name;
 			el.hidden = !on;
@@ -455,14 +455,25 @@ function closePlayer(backToBrowse = true) {
 	moviesError.hidden = true;
 }
 
-document.getElementById("tab-new")?.addEventListener("click", () => {
+window.__riseSwitchViewFull = switchView;
+window.__riseNavigate = (q) => {
+	switchView("browse");
+	navigateBrowse(q || addressInput?.value || newtabInput?.value || "");
+};
+window.__riseSearchMovies = (q) => {
+	switchView("movies");
+	searchMovies(q || moviesSearchInput?.value || "");
+};
+window.__riseNewTab = () => {
 	const tab = { id: nextTabId++, title: "New Tab", url: "" };
 	tabs.push(tab);
 	activeTabId = tab.id;
 	renderTabs();
 	showHome();
 	if (addressInput) addressInput.value = "";
-});
+};
+
+document.getElementById("tab-new")?.addEventListener("click", () => window.__riseNewTab());
 
 document.querySelectorAll("[data-view-nav]").forEach((btn) => {
 	btn.addEventListener("click", (e) => {
@@ -482,12 +493,6 @@ newtabForm?.addEventListener("submit", (e) => {
 	switchView("browse");
 	navigateBrowse(newtabInput?.value || "");
 });
-
-window.__riseNavigate = (q) => {
-	switchView("browse");
-	navigateBrowse(q || addressInput?.value || newtabInput?.value || "");
-};
-window.__riseSearchMovies = (q) => searchMovies(q || moviesSearchInput?.value || "");
 
 document.getElementById("nav-reload")?.addEventListener("click", () => {
 	const tab = activeTab();

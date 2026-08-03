@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- rise-static v3.1 -->
+<!-- rise-static v3.2 -->
 <html lang="en" data-theme="mint">
 	<head>
 		<meta charset="utf-8" />
@@ -32,10 +32,17 @@
 				document.addEventListener(
 					"click",
 					function (e) {
+						if (e.target.closest("#tab-new")) {
+							e.preventDefault();
+							if (window.__riseNewTab) window.__riseNewTab();
+							return;
+						}
 						var nav = e.target.closest("[data-view-nav]");
 						if (nav) {
 							e.preventDefault();
-							switchView(nav.getAttribute("data-view-nav"));
+							var view = nav.getAttribute("data-view-nav");
+							if (window.__riseSwitchViewFull) window.__riseSwitchViewFull(view);
+							else switchView(view);
 						}
 					},
 					true,
@@ -54,8 +61,21 @@
 							window.__riseSearchMovies && window.__riseSearchMovies(q);
 							return;
 						}
-						switchView("browse");
-						window.__riseNavigate && window.__riseNavigate(q);
+						if (window.__riseNavigate) window.__riseNavigate(q);
+						else switchView("browse");
+					},
+					true,
+				);
+				document.addEventListener(
+					"keydown",
+					function (e) {
+						if (e.key !== "Enter") return;
+						var input = e.target;
+						if (!(input instanceof HTMLInputElement)) return;
+						if (input.id !== "address-input" && input.id !== "newtab-input") return;
+						e.preventDefault();
+						var form = input.closest("form");
+						if (form) form.requestSubmit();
 					},
 					true,
 				);
