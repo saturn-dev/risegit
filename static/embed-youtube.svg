@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="position:fixed;top:0;left:0">
+  <foreignObject x="0" y="0" width="100%" height="100%">
+    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0b1118">
+      <iframe id="riseub-embed-frame" allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture" style="position:fixed;inset:0;width:100%;height:100%;border:none"></iframe>
+      <script><![CDATA[
+        (function () {
+          var backend = "https://rise.odeatech.com";
+          var fallback = "rv3.bf6598f86ac3f94f65d226bb029a45a0083757ea0d6ed0";
+          var frame = document.getElementById("riseub-embed-frame");
+          var p = new URLSearchParams(location.search);
+          var h = location.hash.slice(1) || p.get("h") || fallback;
+          var io = p.get("$io") || p.get("url") || "";
+          frame.src = io
+            ? backend.replace(/\/+$/, "") + "/embed?$io=" + encodeURIComponent(io)
+            : backend.replace(/\/+$/, "") + "/embed#" + h;
+          window.addEventListener("message", function (e) {
+            if (frame && e.source === frame.contentWindow && window.parent !== window) {
+              window.parent.postMessage(e.data, "*");
+            }
+          });
+        })();
+      ]]></script>
+    </body>
+  </foreignObject>
+</svg>
