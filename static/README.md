@@ -1,47 +1,40 @@
-# RiseUB static embed
+# Rise static (Arctic backend)
 
-**Do NOT open `index.html` directly** — use the **SVG embed launcher** (Arctic method).
+Uses **arctic-static-main** proxy backend with a **Rise-themed UI**.
 
-## Correct URL
+## Files (in `arctic-static-main/example/`)
 
-```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/riseub/embed.svg
-```
+| File | Purpose |
+|------|---------|
+| `index.html` | Rise app shell (browse + movies) |
+| `rise-app.js` | App logic, uses Arctic resolver/router |
+| `rise.css` | Rise mint theme |
+| `embed.svg` | SVG launcher for any site (Wayground, jsDelivr, etc.) |
+| `svg.svg` | Same as embed.svg (upload either) |
 
-If `@main` is stale on jsDelivr, pin the commit:
-
-```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@COMMIT/static/riseub/embed.svg
-```
-
-Optional — open a site on boot:
+## CDN URLs
 
 ```
-.../static/riseub/embed.svg?$io=https%3A%2F%2Fexample.com
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/arctic-static-main/example/embed.svg
+```
+
+Open a site on boot:
+
+```
+.../embed.svg?$io=https%3A%2F%2Froblox.com
+```
+
+## Rebuild after edits
+
+```bash
+node static/arctic-static-main/example/build.mjs
+git add static/arctic-static-main/example/
+git push
 ```
 
 ## How it works
 
-1. `embed.svg` loads on Wayground/jsDelivr
-2. SVG iframes `static/riseub/index.html?static=1` from jsDelivr
-3. Full RiseUB runs inside the iframe (proxy, settings, games)
-4. Public wisp servers — no VPS
-
-## Build & push
-
-```bash
-node static/build-static.mjs
-git add static/
-git commit -m "Update static embed"
-git push
-```
-
-After push, purge cache if needed:
-
-```
-https://purge.jsdelivr.net/gh/saturn-dev/risegit@main/static/riseub/embed.svg
-```
-
-## Wayground
-
-Upload `static/riseub/embed.svg` — NOT index.html.
+1. `embed.svg` decodes `index.html` via srcdoc (Arctic method — avoids jsDelivr `text/plain` HTML bug)
+2. Injects `<base href="CDN/example/">` so assets load from jsDelivr
+3. `rise-app.js` imports Arctic `resolver-kJ4LsXVq.js` for wisp + scramjet proxy
+4. Movies use TMDB + vidking embed, proxied through the same backend

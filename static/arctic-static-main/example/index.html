@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-theme="mint">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="color-scheme" content="dark" />
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<title>Rise</title>
+		<link rel="stylesheet" href="./rise.css" />
+	</head>
+	<body>
+		<div id="rise-root">
+			<header class="rise-top">
+				<div class="rise-brand">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+						<path d="M2 12h20" stroke="currentColor" stroke-width="1.8" />
+						<path d="M12 2a14.5 14.5 0 0 1 0 20" stroke="currentColor" stroke-width="1.8" />
+					</svg>
+					<span>Rise</span>
+				</div>
+
+				<form class="rise-search" id="rise-search-form">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+						<path d="m20 20-4.2-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+					</svg>
+					<input
+						id="rise-search"
+						type="search"
+						name="q"
+						placeholder="Search the web or paste a link"
+						autocomplete="off"
+						spellcheck="false"
+						aria-label="Search or enter URL"
+					/>
+				</form>
+
+				<nav class="rise-tabs" aria-label="Sections">
+					<button type="button" class="rise-tab on" data-rise-tab="browse">Browse</button>
+					<button type="button" class="rise-tab" data-rise-tab="movies">Movies</button>
+				</nav>
+			</header>
+
+			<main class="rise-main">
+				<section class="rise-panel on" data-rise-panel="browse">
+					<div class="rise-home" id="browse-home">
+						<svg class="rise-logo-big" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
+							<path d="M2 12h20" stroke="currentColor" stroke-width="1.5" />
+							<path d="M12 2a14.5 14.5 0 0 1 0 20" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						<h1>Browse freely</h1>
+						<p>Search anything or paste a URL above. Rise routes traffic through the built-in proxy.</p>
+					</div>
+					<div class="rise-stage" id="browse-stage" hidden>
+						<div class="rise-spinner" aria-hidden="true"></div>
+						<div class="rise-step" id="browse-step">starting…</div>
+					</div>
+					<iframe
+						id="browse-frame"
+						title="Browse frame"
+						allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"
+					></iframe>
+					<div class="rise-error" id="browse-error" hidden>
+						<h2>Couldn’t load that page</h2>
+						<p></p>
+						<button type="button" id="browse-retry">Try again</button>
+					</div>
+				</section>
+
+				<section class="rise-panel" data-rise-panel="movies">
+					<div class="movies-scroll">
+						<div class="movies-head">
+							<h2>Trending</h2>
+						</div>
+						<div class="movies-grid" id="movies-grid"></div>
+					</div>
+					<div class="rise-stage" id="movies-stage" hidden>
+						<div class="rise-spinner" aria-hidden="true"></div>
+						<div class="rise-step" id="movies-step">loading…</div>
+					</div>
+					<iframe
+						id="movies-frame"
+						title="Movies player"
+						allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"
+					></iframe>
+					<div class="rise-error" id="movies-error" hidden>
+						<h2>Couldn’t load player</h2>
+						<p></p>
+						<button type="button" id="movies-retry">Retry</button>
+					</div>
+				</section>
+			</main>
+		</div>
+		<script type="module" src="./rise-app.js"></script>
+	</body>
+</html>
