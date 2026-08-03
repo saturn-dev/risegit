@@ -1,41 +1,39 @@
-# Rise static (Arctic backend) — v3
+# Rise static (Arctic backend) — v2
 
-Rise UI ported from `public/` with taskbar, browser tabs, settings, and Cinema.
+Simple Rise embed: top bar with search, Browse + Movies tabs, Cinema with player.
 
 ## CDN URLs (use mirrors if jsDelivr is throttled)
 
-**Embed:**
+**Embed (most hosts):**
 ```
 https://gcore.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 https://cdn.statically.io/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 ```
 
-**Quizizz upload:**
+**Quizizz upload (use this file — Quizizz strips foreignObject from embed.svg):**
 ```
-static/arctic-static-main/example/quizizz.svg
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/quizizz.svg
 ```
 
-Verify you have v3 — view page source should contain `rise-static v3`.
+Verify version — view page source should contain `rise-static v2`.
 
 ## Rebuild & push
 
 ```bash
-node static/arctic-static-main/example/build-css.mjs
 node static/arctic-static-main/example/build.mjs
 git add static/arctic-static-main/example/ arctic-static-main/example/ static/embed.svg
 git push origin main
 ```
 
-Purge cache (if needed, try mirrors first):
+Purge cache (if needed):
 ```
 https://purge.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 ```
 
-## What's in v3
+## Features
 
-- Bottom **taskbar** (Browse, Movies, Settings) like public Rise
-- **Browser chrome** — tabs, back/forward/reload, address bar
-- **Settings** — themes, taskbar style, search engine, blur/motion toggles
-- **Cinema** — hero banner, poster cards with play overlay, VidLink + other providers
-- **CDN failover** — gcore → statically → testingcf → jsdelivr
+- **Browse** — search bar, proxy navigation
+- **Movies** — TMDB rows (trending, popular, top rated), search, VidLink + 5 other providers
+- **Player** — back button, server picker, season/episode for series
+- **quizizz.svg** — separate launcher for Quizizz/Wayground

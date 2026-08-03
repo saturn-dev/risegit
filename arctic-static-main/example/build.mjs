@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
- * Build Rise SVG launchers (v3)
+ * Build Rise SVG launchers:
+ * - embed.svg / svg.svg — full launcher (foreignObject + srcdoc)
+ * - quizizz.svg — Quizizz-safe (root script only, no foreignObject)
  */
 import { cpSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -11,7 +13,7 @@ const GITHUB = "saturn-dev/risegit";
 const BRANCH = "main";
 const ROOT_SUBPATH = "arctic-static-main";
 const EXAMPLE_SUBPATH = `${ROOT_SUBPATH}/example`;
-const BUILD_VERSION = "v3.2";
+const BUILD_VERSION = "v2";
 
 function cdnOrigins() {
 	const base = `gh/${GITHUB}@${BRANCH}/${ROOT_SUBPATH}`;
@@ -98,23 +100,12 @@ writeFileSync(join(__dirname, "quizizz.svg"), quizizzSvg, "utf8");
 
 const repoRoot = join(__dirname, "..", "..", "..", "arctic-static-main", "example");
 mkdirSync(repoRoot, { recursive: true });
-for (const name of [
-	"index.html",
-	"rise-app.js",
-	"rise-theme.js",
-	"rise-settings.js",
-	"rise.css",
-	"embed.svg",
-	"svg.svg",
-	"quizizz.svg",
-	"build.mjs",
-	"build-css.mjs",
-]) {
+for (const name of ["index.html", "rise-app.js", "rise.css", "embed.svg", "svg.svg", "quizizz.svg", "build.mjs"]) {
 	cpSync(join(__dirname, name), join(repoRoot, name));
 }
 
 writeFileSync(join(__dirname, "..", "..", "embed.svg"), embedSvg, "utf8");
 
 console.log(`Built ${BUILD_VERSION}: embed.svg (${(embedSvg.length / 1024).toFixed(1)} KB), quizizz.svg (${(quizizzSvg.length / 1024).toFixed(1)} KB)`);
-console.log(`CDN mirrors: gcore → statically → testingcf → jsdelivr`);
 for (const o of embedOrigins()) console.log(`  ${o}/embed.svg`);
+console.log(`Quizizz: ${embedOrigins()[0]}/quizizz.svg`);

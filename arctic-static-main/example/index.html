@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- rise-static v3.2 -->
+<!-- rise-static v2 -->
 <html lang="en" data-theme="mint">
 	<head>
 		<meta charset="utf-8" />
@@ -8,197 +8,114 @@
 		<meta http-equiv="Cache-Control" content="no-store" />
 		<title>Rise</title>
 		<link rel="stylesheet" href="./example/rise.css" />
-		<script>
-			(function () {
-				function switchView(name) {
-					document.querySelectorAll(".view[data-view]").forEach(function (el) {
-						var on = el.getAttribute("data-view") === name;
-						el.hidden = !on;
-						el.classList.toggle("on", on);
-					});
-					document.querySelectorAll("[data-view-nav]").forEach(function (btn) {
-						btn.classList.toggle("on", btn.getAttribute("data-view-nav") === name);
-					});
-					var bar = document.getElementById("app-taskbar");
-					var indicator = bar && bar.querySelector(".taskbar__indicator");
-					var active = bar && bar.querySelector(".taskbar__item.on");
-					if (bar && indicator && active) {
-						bar.classList.add("is-ready");
-						indicator.style.width = active.offsetWidth + "px";
-						indicator.style.transform = "translateX(" + active.offsetLeft + "px)";
-					}
-				}
-				window.__riseSwitchView = switchView;
-				document.addEventListener(
-					"click",
-					function (e) {
-						if (e.target.closest("#tab-new")) {
-							e.preventDefault();
-							if (window.__riseNewTab) window.__riseNewTab();
-							return;
-						}
-						var nav = e.target.closest("[data-view-nav]");
-						if (nav) {
-							e.preventDefault();
-							var view = nav.getAttribute("data-view-nav");
-							if (window.__riseSwitchViewFull) window.__riseSwitchViewFull(view);
-							else switchView(view);
-						}
-					},
-					true,
-				);
-				document.addEventListener(
-					"submit",
-					function (e) {
-						var form = e.target;
-						if (!(form instanceof HTMLFormElement)) return;
-						e.preventDefault();
-						var q = "";
-						var input = form.querySelector("input[type=text],input[type=search],input:not([type])");
-						if (input) q = input.value;
-						if (form.id === "movies-search-form") {
-							switchView("movies");
-							window.__riseSearchMovies && window.__riseSearchMovies(q);
-							return;
-						}
-						if (window.__riseNavigate) window.__riseNavigate(q);
-						else switchView("browse");
-					},
-					true,
-				);
-				document.addEventListener(
-					"keydown",
-					function (e) {
-						if (e.key !== "Enter") return;
-						var input = e.target;
-						if (!(input instanceof HTMLInputElement)) return;
-						if (input.id !== "address-input" && input.id !== "newtab-input") return;
-						e.preventDefault();
-						var form = input.closest("form");
-						if (form) form.requestSubmit();
-					},
-					true,
-				);
-			})();
-		</script>
 	</head>
 	<body>
 		<div id="rise-root">
-			<section class="view on" data-view="browse" id="view-browse">
-				<div class="browse__main">
-					<div class="tabstrip">
-						<div class="tabstrip__list" id="tab-list">
-							<div class="tab is-active" data-tab-id="1" role="button" tabindex="0">
-								<span class="tab__fav" aria-hidden="true">🌐</span>
-								<span class="tab__title">New Tab</span>
-							</div>
-						</div>
-						<button type="button" class="tabstrip__new" id="tab-new" title="New tab" aria-label="New tab">+</button>
+			<header class="rise-top">
+				<div class="rise-brand">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+						<path d="M2 12h20" stroke="currentColor" stroke-width="1.8" />
+						<path d="M12 2a14.5 14.5 0 0 1 0 20" stroke="currentColor" stroke-width="1.8" />
+					</svg>
+					<span>Rise</span>
+				</div>
+
+				<form class="rise-search" id="rise-search-form">
+					<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+						<path d="m20 20-4.2-4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+					</svg>
+					<input
+						id="rise-search"
+						type="search"
+						name="q"
+						placeholder="Search the web or paste a link"
+						autocomplete="off"
+						spellcheck="false"
+						aria-label="Search or enter URL"
+					/>
+				</form>
+
+				<nav class="rise-tabs" aria-label="Sections">
+					<button type="button" class="rise-tab on" data-rise-tab="browse">Browse</button>
+					<button type="button" class="rise-tab" data-rise-tab="movies">Movies</button>
+				</nav>
+			</header>
+
+			<main class="rise-main">
+				<section class="rise-panel on" data-rise-panel="browse">
+					<div class="rise-home" id="browse-home">
+						<svg class="rise-logo-big" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
+							<path d="M2 12h20" stroke="currentColor" stroke-width="1.5" />
+							<path d="M12 2a14.5 14.5 0 0 1 0 20" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						<h1>Browse freely</h1>
+						<p>Search anything or paste a URL above. Rise routes traffic through the built-in proxy.</p>
 					</div>
+					<div class="rise-stage" id="browse-stage" hidden>
+						<div class="rise-spinner" aria-hidden="true"></div>
+						<div class="rise-step" id="browse-step">starting…</div>
+					</div>
+					<iframe
+						id="browse-frame"
+						title="Browse frame"
+						allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"
+					></iframe>
+					<div class="rise-error" id="browse-error" hidden>
+						<h2>Couldn’t load that page</h2>
+						<p></p>
+						<button type="button" id="browse-retry">Try again</button>
+					</div>
+				</section>
 
-					<header class="proxy-header">
-						<form class="address-bar" id="address-form" action="#" method="get" onsubmit="return false">
-							<button type="button" id="nav-back" title="Back" aria-label="Back">←</button>
-							<button type="button" id="nav-forward" title="Forward" aria-label="Forward">→</button>
-							<button type="button" id="nav-reload" title="Reload" aria-label="Reload">↻</button>
-							<div class="address-field">
-								<input id="address-input" class="address-input" type="text" spellcheck="false" autocomplete="off" placeholder="Search or enter a URL" />
+				<section class="rise-panel" data-rise-panel="movies">
+					<div class="movies-browse" id="movies-browse">
+						<div class="movies-head">
+							<div>
+								<h2>Cinema</h2>
+								<p class="movies-sub">Movies &amp; series</p>
 							</div>
-						</form>
-					</header>
-
-					<div class="frame-shell" id="frame-shell">
-						<div class="newtab" id="browse-home">
-							<div class="newtab__brand">
-								<svg class="newtab__logo" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-									<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5" />
-									<path d="M2 12h20" stroke="currentColor" stroke-width="1.5" />
-									<path d="M12 2a14.5 14.5 0 0 1 0 20" stroke="currentColor" stroke-width="1.5" />
-								</svg>
-								<p class="newtab__tagline">Search the web, or paste a link</p>
-							</div>
-							<form class="newtab__field" id="newtab-form" action="#" method="get" onsubmit="return false">
-								<input id="newtab-input" class="newtab__input" type="text" spellcheck="false" autocomplete="off" placeholder="Search the web or type a URL" />
-								<button type="submit" class="newtab__go" aria-label="Go">Go</button>
+							<form class="movies-search" id="movies-search-form">
+								<input id="movies-search" type="search" placeholder="Search titles…" autocomplete="off" spellcheck="false" />
 							</form>
 						</div>
-						<div class="rise-stage" id="browse-stage" hidden>
-							<div class="rise-spinner"></div>
-							<div class="rise-step" id="browse-step">starting…</div>
+						<div id="movies-rows"></div>
+					</div>
+
+					<div class="movies-player" id="movies-player" hidden>
+						<div class="player-rail">
+							<button type="button" class="player-back" id="player-back">← Back</button>
+							<div class="player-meta">
+								<p class="player-title" id="player-title"></p>
+								<p class="player-sub" id="player-sub"></p>
+							</div>
+							<label class="player-server">Server <select id="player-server"></select></label>
+							<div class="player-ep" id="player-ep" hidden>
+								<label>S <input id="player-season" type="number" min="1" value="1" /></label>
+								<label>E <input id="player-episode" type="number" min="1" value="1" /></label>
+								<button type="button" id="player-ep-go">Go</button>
+							</div>
 						</div>
-						<iframe id="browse-frame" title="Browse frame" allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-						<div class="rise-error" id="browse-error" hidden>
-							<h2>Couldn’t load that page</h2>
+						<div class="rise-stage" id="movies-stage" hidden>
+							<div class="rise-spinner" aria-hidden="true"></div>
+							<div class="rise-step" id="movies-step">loading…</div>
+						</div>
+						<iframe
+							id="movies-frame"
+							title="Movies player"
+							allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"
+						></iframe>
+						<div class="rise-error" id="movies-error" hidden>
+							<h2>Couldn’t load player</h2>
 							<p></p>
-							<button type="button" id="browse-retry">Try again</button>
+							<button type="button" id="movies-retry">Try another server</button>
 						</div>
 					</div>
-				</div>
-			</section>
-
-			<section class="view media-page movies-page" data-view="movies" id="view-movies" hidden>
-				<div class="media-topbar" id="movies-topbar">
-					<div class="media-brand">
-						<svg class="media-brand__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-							<rect width="18" height="18" x="3" y="3" rx="2" stroke="currentColor" stroke-width="1.5" />
-							<path d="M7 3v18M17 3v18M3 12h18" stroke="currentColor" stroke-width="1.5" />
-						</svg>
-						<div><h1>Cinema</h1><p class="media-sub">Movies &amp; series</p></div>
-					</div>
-					<form class="media-search-wrap" id="movies-search-form" action="#" method="get" onsubmit="return false">
-						<input id="movies-search" class="media-search" type="search" placeholder="Search movies &amp; series" autocomplete="off" spellcheck="false" />
-					</form>
-				</div>
-
-				<div id="movies-browse" class="media-content">
-					<div id="movies-hero"></div>
-					<div class="rows" id="movies-rows"></div>
-				</div>
-
-				<div id="movies-player" class="media-player" hidden>
-					<div class="player-rail">
-						<button type="button" class="rail-btn" id="player-back">← Back</button>
-						<div class="player-meta">
-							<p class="player-title" id="player-title"></p>
-							<p class="player-sub" id="player-sub"></p>
-						</div>
-						<label class="player-server">Server <select id="player-server"></select></label>
-						<div class="player-ep" id="player-ep" hidden>
-							<label>S <input id="player-season" type="number" min="1" value="1" /></label>
-							<label>E <input id="player-episode" type="number" min="1" value="1" /></label>
-							<button type="button" id="player-ep-go">Go</button>
-						</div>
-					</div>
-					<div class="rise-stage" id="movies-stage" hidden>
-						<div class="rise-spinner"></div>
-						<div class="rise-step" id="movies-step">loading…</div>
-					</div>
-					<iframe id="movies-frame" title="Movies player" allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-					<div class="rise-error" id="movies-error" hidden>
-						<h2>Couldn’t load player</h2>
-						<p></p>
-						<button type="button" id="movies-retry">Try another server</button>
-					</div>
-				</div>
-			</section>
-
-			<section class="view" data-view="settings" id="view-settings" hidden></section>
+				</section>
+			</main>
 		</div>
-
-		<nav class="taskbar" id="app-taskbar" aria-label="Primary">
-			<span class="taskbar__indicator" aria-hidden="true"></span>
-			<button type="button" class="taskbar__item on" data-view-nav="browse" data-label="Browse" aria-label="Browse">
-				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M2 12h20M12 2a14.5 14.5 0 0 1 0 20" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
-			</button>
-			<button type="button" class="taskbar__item" data-view-nav="movies" data-label="Movies" aria-label="Movies">
-				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M7 3v18M17 3v18M3 12h18" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
-			</button>
-			<span class="taskbar__sep" aria-hidden="true"></span>
-			<button type="button" class="taskbar__item" data-view-nav="settings" data-label="Settings" aria-label="Settings">
-				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
-			</button>
-		</nav>
-
 		<script type="module" src="./example/rise-app.js"></script>
 	</body>
 </html>
