@@ -1,41 +1,41 @@
-# Rise static (Arctic backend)
+# Rise static (Arctic backend) — v3
 
-Rise-themed UI using the **arctic-static-main** proxy stack.
+Rise UI ported from `public/` with taskbar, browser tabs, settings, and Cinema.
 
-## CDN URLs
+## CDN URLs (use mirrors if jsDelivr is throttled)
 
-**Embed (use this on any site):**
+**Embed:**
 ```
+https://gcore.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
+https://cdn.statically.io/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 ```
 
-Open a site on boot:
+**Quizizz upload:**
 ```
-.../embed.svg?$io=https%3A%2F%2Froblox.com
+static/arctic-static-main/example/quizizz.svg
 ```
 
-Proxy assets (`resolver`, `sw.js`, `vendor/`) live at repo root `arctic-static-main/` — the embed sets `<base href>` there automatically.
+Verify you have v3 — view page source should contain `rise-static v3`.
 
-## Files
-
-| File | Purpose |
-|------|---------|
-| `static/arctic-static-main/example/index.html` | Rise UI (edit here) |
-| `static/arctic-static-main/example/rise-app.js` | Browse + movies logic |
-| `static/arctic-static-main/example/rise.css` | Mint theme |
-| `static/arctic-static-main/example/embed.svg` | SVG launcher |
-
-`build.mjs` syncs to `arctic-static-main/example/` for GitHub/jsDelivr.
-
-## Rebuild
+## Rebuild & push
 
 ```bash
+node static/arctic-static-main/example/build-css.mjs
 node static/arctic-static-main/example/build.mjs
-git add static/arctic-static-main/example/ arctic-static-main/example/
-git push
+git add static/arctic-static-main/example/ arctic-static-main/example/ static/embed.svg
+git push origin main
 ```
 
-Purge cache if needed:
+Purge cache (if needed, try mirrors first):
 ```
 https://purge.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 ```
+
+## What's in v3
+
+- Bottom **taskbar** (Browse, Movies, Settings) like public Rise
+- **Browser chrome** — tabs, back/forward/reload, address bar
+- **Settings** — themes, taskbar style, search engine, blur/motion toggles
+- **Cinema** — hero banner, poster cards with play overlay, VidLink + other providers
+- **CDN failover** — gcore → statically → testingcf → jsdelivr
