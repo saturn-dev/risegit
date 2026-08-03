@@ -14,7 +14,7 @@ const ROOT = join(__dirname, "..");
 const CDN_DIR = join(ROOT, "arctic-static-main");
 const EMBED_HTML = join(CDN_DIR, "embed.html");
 
-const DEFAULT_GITHUB = "saturn-dev/riseUB";
+const DEFAULT_GITHUB = "saturn-dev/risegit";
 const CDN_SUBPATH = "arctic-static-main";
 
 function parseArgs(argv) {
@@ -54,7 +54,7 @@ Usage:
   node static/build-embed.mjs [options]
 
 Options:
-  --github USER/REPO   GitHub repo (default: saturn-dev/riseUB)
+  --github USER/REPO   GitHub repo (default: saturn-dev/risegit)
   --branch BRANCH      Git branch (default: main)
   --target URL         Destination site (default: https://www.roblox.com/)
   --out FILE           Main embed.svg path (default: arctic-static-main/embed.svg)
@@ -62,7 +62,7 @@ Options:
 
 Examples:
   node static/build-embed.mjs --target https://roblox.com
-  node static/build-embed.mjs --target youtube.com --github saturn-dev/riseUB
+  node static/build-embed.mjs --target youtube.com --github saturn-dev/risegit
 `);
 }
 

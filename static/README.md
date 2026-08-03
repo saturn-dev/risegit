@@ -23,13 +23,13 @@ git push
 Wait 1–2 minutes, then open:
 
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/riseUB@main/arctic-static-main/embed.svg?$io=https%3A%2F%2Froblox.com
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/embed.svg?$io=https%3A%2F%2Froblox.com
 ```
 
 Or with hash:
 
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/riseUB@main/arctic-static-main/embed.svg#rv3.bf6598f86ac3f94f65d226bb099a52b8122d1ca7016c92
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/embed.svg#rv3.bf6598f86ac3f94f65d226bb099a52b8122d1ca7016c92
 ```
 
 The build script prints the exact `f/` path URL after each run.
@@ -63,5 +63,5 @@ node static/rv3.mjs decode rv3.bf6598f86ac3f94f65d226bb099a52b8122d1ca7016c92
 ## Custom target
 
 ```bash
-node static/build-embed.mjs --target https://www.youtube.com --github saturn-dev/riseUB
+node static/build-embed.mjs --target https://www.youtube.com --github saturn-dev/risegit
 ```
