@@ -1,0 +1,1322 @@
+{
+  "games": [
+    {
+      "name": "Retro Bowl College",
+      "author": "New Star Games",
+      "link": "clretrobowlcollege"
+    },
+    {
+      "name": "Retro Bowl",
+      "author": "New Star Games",
+      "link": "clretrobowl"
+    },
+    {
+      "name": "Gold Digger FRVR",
+      "author": "Chris Benjaminsen",
+      "link": "clgolddiggerfrvr"
+    },
+    {
+      "name": "Recoil",
+      "author": "Martin Magni",
+      "link": "clrecoil"
+    },
+    {
+      "name": "Football Legends",
+      "author": "MadPuffers",
+      "link": "clfootballlegends"
+    },
+    {
+      "name": "Monster Tracks",
+      "author": "Martin Magni",
+      "link": "clmonstertracks"
+    },
+    {
+      "name": "Drive Mad",
+      "author": "Martin Magni",
+      "link": "cldrivemad"
+    },
+    {
+      "name": "Rooftop Snipers",
+      "author": "New Eich Games",
+      "link": "clrooftopsnipers"
+    },
+    {
+      "name": "Rooftop Snipers 2",
+      "author": "New Eich Games",
+      "link": "clrooftopsnipers2"
+    },
+    {
+      "name": "President Simulator",
+      "author": "Emolingo Games",
+      "link": "g_president-simulator"
+    },
+    {
+      "name": "Basketball Stars",
+      "author": "Madpuffers",
+      "link": "clbasketballstars"
+    },
+    {
+      "name": "Basketball Legends 2020",
+      "author": "Madpuffers",
+      "link": "clbasketballlegends(1)"
+    },
+    {
+      "name": "Basket Bros",
+      "author": "Blue Wizard Digital",
+      "link": "clbasketbros"
+    },
+    {
+      "name": "Shell Shockers",
+      "author": "Blue Wizard Digital",
+      "link": "https://shellshock.io/"
+    },
+    {
+      "name": "Bouncy Basketball",
+      "author": "Dreamon Studios AB",
+      "link": "clbouncybasketball"
+    },
+    {
+      "name": "Stick Merge",
+      "author": "TinyDobbins",
+      "link": "clstickmerge"
+    },
+    {
+      "name": "Sausage Flip",
+      "author": "Madbox",
+      "link": "clsausageflip"
+    },
+    {
+      "name": "Burger Bounty",
+      "author": "OnRush Studio",
+      "link": "g_burger-bounty"
+    },
+    {
+      "name": "Getaway Shootout",
+      "author": "New Eich Games",
+      "link": "clgetawayshootout"
+    },
+    {
+      "name": "Tube Jumpers",
+      "author": "New Eich Games",
+      "link": "cltubejumpers"
+    },
+    {
+      "name": "BitLife",
+      "author": "CandyWriter LLC",
+      "link": "clbitlife"
+    },
+    {
+      "name": "Swingo",
+      "author": "Blumgi",
+      "link": "g_swingo"
+    },
+    {
+      "name": "Roper",
+      "author": "Martin Magni",
+      "link": "g_roper"
+    },
+    {
+      "name": "Idle Mining Empire",
+      "author": "MarketJS",
+      "link": "g_idle-mining-empire"
+    },
+    {
+      "name": "Idle Startup Tycoon",
+      "author": "MarketJS",
+      "link": "g_idle-startup-tycoon"
+    },
+    {
+      "name": "Idle Gang",
+      "author": "NoPowerup",
+      "link": "g_idle-gang"
+    },
+    {
+      "name": "Ball Mayhem",
+      "author": "Voodoo",
+      "link": "g_ball-mayhem"
+    },
+    {
+      "name": "Soccer Skills World Cup",
+      "author": "Radical Play",
+      "link": "g_soccer-skills-world-cup"
+    },
+    {
+      "name": "Soccer Skills Euro Cup",
+      "author": "Radical Play",
+      "link": "g_soccer-skills-euro-cup"
+    },
+    {
+      "name": "A Small World Cup",
+      "author": "Rujo Games",
+      "link": "clasmallworldcup"
+    },
+    {
+      "name": "Penalty Shooters 2",
+      "author": "10x10games",
+      "link": "g_penalty-shooters-2"
+    },
+    {
+      "name": "Soccer Random",
+      "author": "RHM Interactive",
+      "link": "clsoccerrandom"
+    },
+    {
+      "name": "Boxing Random",
+      "author": "RHM Interactive",
+      "link": "clboxingrandom"
+    },
+    {
+      "name": "Basket Random",
+      "author": "RHM Interactive",
+      "link": "clbasketrandom"
+    },
+    {
+      "name": "Volley Random",
+      "author": "RHM Interactive",
+      "link": "clvolleyrandom"
+    },
+    {
+      "name": "Boxing Physics 2",
+      "author": "Cool Bears LLC",
+      "link": "g_boxing-physics-2"
+    },
+    {
+      "name": "Slope",
+      "author": "Rob Kay",
+      "link": "clslope"
+    },
+    {
+      "name": "Slope 2",
+      "author": "Rob Kay",
+      "link": ""
+    },
+    {
+      "name": "Slope 3",
+      "author": "Rob Kay",
+      "link": "clslope3"
+    },
+    {
+      "name": "Sprinter",
+      "author": "Gamedesign",
+      "link": "clsprinter"
+    },
+    {
+      "name": "Gladihoppers",
+      "author": "Dreamon Studios AB",
+      "link": "clgladdihoppers"
+    },
+    {
+      "name": "Jack Smith",
+      "author": "Flipline Studios",
+      "link": "cljacksmith"
+    },
+    {
+      "name": "Table Tennis World Tour",
+      "author": "Happylander",
+      "link": "cltabletennisworldtour"
+    },
+    {
+      "name": "The Spear Stickman",
+      "author": "Maximiliano Demonte",
+      "link": ""
+    },
+    {
+      "name": "Death Run 3D",
+      "author": "Dragon King",
+      "link": "cldeathrun"
+    },
+    {
+      "name": "Bossy Toss",
+      "author": "No Pressure Studios",
+      "link": ""
+    },
+    {
+      "name": "Unicycle Hero",
+      "author": "Unept",
+      "link": "clunicyclehero"
+    },
+    {
+      "name": "Time Shooter 2",
+      "author": "GoGoMan",
+      "link": "cltimeshooter2"
+    },
+    {
+      "name": "Time Shooter 3 SWAT",
+      "author": "GoGoMan",
+      "link": "cltimeshooter3"
+    },
+    {
+      "name": "Funny Shooter",
+      "author": "GoGoMan",
+      "link": ""
+    },
+    {
+      "name": "Funny Shooter 2",
+      "author": "GoGoMan",
+      "link": "clfunnyshooter2"
+    },
+    {
+      "name": "Funny Battle 2",
+      "author": "GoGoMan",
+      "link": "clfunnybattle2"
+    },
+    {
+      "name": "Sniper Shot",
+      "author": "GoGoMan",
+      "link": "clsnipershot"
+    },
+    {
+      "name": "Bank Robbery",
+      "author": "GoGoMan",
+      "link": "clBank Robbery"
+    },
+    {
+      "name": "Bank Robbery 2",
+      "author": "GoGoMan",
+      "link": "clbankrobbery2"
+    },
+    {
+      "name": "Body Drop 3D",
+      "author": "JustPlay",
+      "link": ""
+    },
+    {
+      "name": "Fruit Ninja",
+      "author": "Halfbrick Studios",
+      "link": "clfruitninja"
+    },
+    {
+      "name": "Super Hot",
+      "author": "SUPERHOT Team",
+      "link": "clsuperhot"
+    },
+    {
+      "name": "A Dark Room",
+      "author": "Doublespeak Games",
+      "link": "clADarkRoom"
+    },
+    {
+      "name": "Five Nights At Freddys",
+      "author": "Scott Cawthon",
+      "link": "clFNAF"
+    },
+    {
+      "name": "Five Nights At Winstons",
+      "author": "Calder",
+      "link": ""
+    },
+    {
+      "name": "Granny",
+      "author": "DVloper",
+      "link": "clgranny"
+    },
+    {
+      "name": "Tetris",
+      "author": "Alexey Pajitnov",
+      "link": "cltetris"
+    },
+    {
+      "name": "Kiwi Clicker",
+      "author": "Tobspr",
+      "link": ""
+    },
+    {
+      "name": "Crusher Clicker",
+      "author": "",
+      "link": "g_crusher_clicker"
+    },
+    {
+      "name": "Push Your Luck",
+      "author": "Bruno Faidutti",
+      "link": "clpushyourluck"
+    },
+    {
+      "name": "Chicken Merge",
+      "author": "Beedo Games",
+      "link": ""
+    },
+    {
+      "name": "Idle Shark",
+      "author": "Cirrial",
+      "link": ""
+    },
+    {
+      "name": "Idle Breakout",
+      "author": "Kodiqi",
+      "link": "clidlebreakout"
+    },
+    {
+      "name": "Burrito Bison",
+      "author": "Juicy Beast",
+      "link": "clburritobison"
+    },
+    {
+      "name": "Dune",
+      "author": "Voodoo",
+      "link": ""
+    },
+    {
+      "name": "Gunspin",
+      "author": "MiniJuegos",
+      "link": "clgun-spin"
+    },
+    {
+      "name": "Run 3",
+      "author": "Joseph Cloutier",
+      "link": "clrun3"
+    },
+    {
+      "name": "Drift Boss",
+      "author": "MarketJS",
+      "link": "cldriftboss"
+    },
+    {
+      "name": "Galactic Empire",
+      "author": "Jeff Ramos",
+      "link": ""
+    },
+    {
+      "name": "Apple Shooter",
+      "author": "Wolf Games",
+      "link": "clappleshooter"
+    },
+    {
+      "name": "Tag",
+      "author": "JetGames",
+      "link": "cltag-"
+    },
+    {
+      "name": "Vex 3",
+      "author": "Amazing Adam",
+      "link": "clvex3"
+    },
+    {
+      "name": "Vex 4",
+      "author": "Amazing Adam",
+      "link": "clvex4"
+    },
+    {
+      "name": "Vex 5",
+      "author": "Amazing Adam",
+      "link": "clvex5"
+    },
+    {
+      "name": "Vex 6",
+      "author": "Amazing Adam",
+      "link": "clvex6"
+    },
+    {
+      "name": "Vex 7",
+      "author": "Amazing Adam",
+      "link": "clvex7"
+    },
+    {
+      "name": "Vex 8",
+      "author": "Amazing Adam",
+      "link": "clvex8"
+    },
+    {
+      "name": "Vex Challenges",
+      "author": "Azerion Casual",
+      "link": "clvexchallenges"
+    },
+    {
+      "name": "Idle Ants",
+      "author": "Madbox",
+      "link": ""
+    },
+    {
+      "name": "Subway Surfers Monaco",
+      "author": "SYBO",
+      "link": "clsubwaysurfersmonaco"
+    },
+    {
+      "name": "Idle Gun",
+      "author": "Neko",
+      "link": ""
+    },
+    {
+      "name": "Parkour Race",
+      "author": "Madbox",
+      "link": ""
+    },
+    {
+      "name": "Lands Of Blight",
+      "author": "7Spot Games",
+      "link": ""
+    },
+    {
+      "name": "Learn To Fly",
+      "author": "Light Bringer Games",
+      "link": "cllearntofly"
+    },
+    {
+      "name": "Learn To Fly 2",
+      "author": "Light Bringer Games",
+      "link": "cllearntofly2"
+    },
+    {
+      "name": "Learn To Fly 3",
+      "author": "Light Bringer Games",
+      "link": "cllearntofly3"
+    },
+    {
+      "name": "Backrooms",
+      "author": "Pie On A Plate Productions",
+      "link": "clbackrooms"
+    },
+    {
+      "name": "The Impossible Quiz 2",
+      "author": "Splapp-me-do",
+      "link": "climpossiblequiz2"
+    },
+    {
+      "name": "The Impossible Quiz",
+      "author": "Splapp-me-do",
+      "link": "climpossiblequiz"
+    },
+    {
+      "name": "The Impossible Quiz Book",
+      "author": "Splapp-me-do",
+      "link": ""
+    },
+    {
+      "name": "Worlds Hardest Game 3",
+      "author": "Snubby Land",
+      "link": "clworldshardestgame3"
+    },
+    {
+      "name": "Worlds Hardest Game 2",
+      "author": "Snubby Land",
+      "link": "clworldshardestgame2"
+    },
+    {
+      "name": "Worlds Hardest Game",
+      "author": "Snubby Land",
+      "link": "clworldshardestgame"
+    },
+    {
+      "name": "Tanuki Sunset",
+      "author": "Rewind Games",
+      "link": "cltanukisunset"
+    },
+    {
+      "name": "Merge Round Racers",
+      "author": "TinyDobbins",
+      "link": "clmergeroundracers"
+    },
+    {
+      "name": "Papery Planes",
+      "author": "Discovery Learning",
+      "link": ""
+    },
+    {
+      "name": "FNF Full Week",
+      "author": "Ninjamuffin99",
+      "link": "clfridaynightfunkin"
+    },
+    {
+      "name": "Cannon Basketball 4",
+      "author": "Qzix13",
+      "link": ""
+    },
+    {
+      "name": "Cannon Basketball 3",
+      "author": "Qzix13",
+      "link": ""
+    },
+    {
+      "name": "Getting Over It",
+      "author": "Griffpatch",
+      "link": "clgettingoverit"
+    },
+    {
+      "name": "Gunblood",
+      "author": "Wolf Games",
+      "link": "clgunblood"
+    },
+    {
+      "name": "Google Feud",
+      "author": "Justin Hook",
+      "link": ""
+    },
+    {
+      "name": "Earn To Die",
+      "author": "Toffee Games",
+      "link": "clearntodie"
+    },
+    {
+      "name": "Snow Rider 3D",
+      "author": "New Gamer",
+      "link": "clsnowrider"
+    },
+    {
+      "name": "Crossy Road",
+      "author": "Hipster Whale",
+      "link": "clcrossyroad"
+    },
+    {
+      "name": "Crossy Road Space",
+      "author": "Hipster Whale",
+      "link": ""
+    },
+    {
+      "name": "Murder",
+      "author": "Studio Seufz",
+      "link": ""
+    },
+    {
+      "name": "10 Minutes Till Dawn",
+      "author": "Flanne",
+      "link": "cl10minutestildawn"
+    },
+    {
+      "name": "Head Soccer 2022",
+      "author": "D&D Dream",
+      "link": ""
+    },
+    {
+      "name": "Portal",
+      "author": "We Create Stuff",
+      "link": "clportal"
+    },
+    {
+      "name": "Creative Kill Chamber",
+      "author": "No Pressure Studios",
+      "link": ""
+    },
+    {
+      "name": "Gun Mayhem",
+      "author": "Kevin Gu",
+      "link": "clgunmayhem"
+    },
+    {
+      "name": "Gun Mayhem 2",
+      "author": "Kevin Gu",
+      "link": "clgunmayhem2"
+    },
+    {
+      "name": "Gun Mayhem Redux",
+      "author": "Kevin Gu",
+      "link": "clgunmayhemredux"
+    },
+    {
+      "name": "Papa's Burgeria",
+      "author": "Flipline Studios",
+      "link": "clpapasburgerIIIAAAAA"
+    },
+    {
+      "name": "Papa's Pizzeria",
+      "author": "Flipline Studios",
+      "link": "clpizzapapa"
+    },
+    {
+      "name": "Papa's Freezeria",
+      "author": "Flipline Studios",
+      "link": "clpapasfreezeria"
+    },
+    {
+      "name": "Papa's Cupcakeria",
+      "author": "Flipline Studios",
+      "link": "clpapascupcakeria"
+    },
+    {
+      "name": "Papa's Scooperia",
+      "author": "Flipline Studios",
+      "link": "clpapasscooperia"
+    },
+    {
+      "name": "Papa's Donuteria",
+      "author": "Flipline Studios",
+      "link": "clpapadonut"
+    },
+    {
+      "name": "Papa's Pancakeria",
+      "author": "Flipline Studios",
+      "link": "clpapaspancakeria"
+    },
+    {
+      "name": "Papa's Hot Doggeria",
+      "author": "Flipline Studios",
+      "link": "clpapashotdoggeria"
+    },
+    {
+      "name": "Papa's Sushiria",
+      "author": "Flipline Studios",
+      "link": "clpapassushiria"
+    },
+    {
+      "name": "Papa's Taco Mia",
+      "author": "Flipline Studios",
+      "link": "clpapastacomia"
+    },
+    {
+      "name": "Papa's Wingeria",
+      "author": "Flipline Studios",
+      "link": "clpapaswingeria"
+    },
+    {
+      "name": "Papa's Pastaria",
+      "author": "Flipline Studios",
+      "link": "clpapaspastaria"
+    },
+    {
+      "name": "Papa's Cheeseria",
+      "author": "Flipline Studios",
+      "link": "clpapascheeseria"
+    },
+    {
+      "name": "Papa's Bakeria",
+      "author": "Flipline Studios",
+      "link": "clpapabakeria"
+    },
+    {
+      "name": "Sift Heads",
+      "author": "Pyrozen",
+      "link": ""
+    },
+    {
+      "name": "Sift Heads 2",
+      "author": "Pyrozen",
+      "link": ""
+    },
+    {
+      "name": "Sift Heads 3",
+      "author": "Pyrozen",
+      "link": ""
+    },
+    {
+      "name": "Sift Heads 4",
+      "author": "Pyrozen",
+      "link": ""
+    },
+    {
+      "name": "Sift Heads 5",
+      "author": "Pyrozen",
+      "link": ""
+    },
+    {
+      "name": "Core Ball",
+      "author": "Burning Games and Big Child Creatives",
+      "link": "clcoreball"
+    },
+    {
+      "name": "Frying Nemo",
+      "author": "Ytkimirti",
+      "link": ""
+    },
+    {
+      "name": "George And The Printer",
+      "author": "Eloïse Zirotti and Robin Six",
+      "link": "clgeorgeandtheprinter"
+    },
+    {
+      "name": "Deal Or No Deal",
+      "author": "John de Mol",
+      "link": ""
+    },
+    {
+      "name": "Cluster Rush",
+      "author": "TinyBuild",
+      "link": "clclusterrush"
+    },
+    {
+      "name": "Sling Drift",
+      "author": "TastyPill LLC",
+      "link": ""
+    },
+    {
+      "name": "Moto X3M",
+      "author": "MadPuffers",
+      "link": "clmotox3mm"
+    },
+    {
+      "name": "Moto X3M 2",
+      "author": "MadPuffers",
+      "link": "clmotox3m2"
+    },
+    {
+      "name": "Moto X3M 3",
+      "author": "MadPuffers",
+      "link": "clmotox3m3"
+    },
+    {
+      "name": "Moto X3M Pool Party",
+      "author": "MadPuffers",
+      "link": "clmotox3mpoolparty"
+    },
+    {
+      "name": "Moto X3M Spooky Land",
+      "author": "MadPuffers",
+      "link": "clmotox3mspookyland"
+    },
+    {
+      "name": "Moto X3M Winter",
+      "author": "MadPuffers",
+      "link": "clmotox3mwinter"
+    },
+    {
+      "name": "Bacon May Die",
+      "author": "SnoutUp Games",
+      "link": "clbaconmaydie"
+    },
+    {
+      "name": "Day of Meat Radiation",
+      "author": "Lampogolovii",
+      "link": ""
+    },
+    {
+      "name": "Adventure Capitalist",
+      "author": "Hyper Hippo",
+      "link": "cladventurecapitalist"
+    },
+    {
+      "name": "Bob The Robber 2",
+      "author": "MeowBeast",
+      "link": "clbobtherobber2"
+    },
+    {
+      "name": "Bob The Robber 4",
+      "author": "MeowBeast",
+      "link": ""
+    },
+    {
+      "name": "Bob The Robber 5",
+      "author": "MeowBeast",
+      "link": "clbobtherobber5"
+    },
+    {
+      "name": "Jetpack Joyride",
+      "author": "Halfbrick Studios",
+      "link": "cljetpackjoyride"
+    },
+    {
+      "name": "Turbo Moto Racer",
+      "author": "Staple Technologies",
+      "link": ""
+    },
+    {
+      "name": "Doodle Jump",
+      "author": "Lima Sky",
+      "link": "cldoodlejump"
+    },
+    {
+      "name": "Sketchbook",
+      "author": "Swift502",
+      "link": ""
+    },
+    {
+      "name": "Stack",
+      "author": "Double Fine",
+      "link": ""
+    },
+    {
+      "name": "Computer Bashing",
+      "author": "Javi Hernández",
+      "link": ""
+    },
+    {
+      "name": "Slime Rush TD",
+      "author": "Kizi",
+      "link": ""
+    },
+    {
+      "name": "Scrap Metal 3",
+      "author": "Ciorbyn",
+      "link": "clscrapmetal3"
+    },
+    {
+      "name": "Google Snake",
+      "author": "Google",
+      "link": ""
+    },
+    {
+      "name": "Tunnel Rush",
+      "author": "Deer Cat Games",
+      "link": "cltunnelrush"
+    },
+    {
+      "name": "Tunnel Rush 2",
+      "author": "Deer Cat Games",
+      "link": ""
+    },
+    {
+      "name": "Super Tunnel Rush",
+      "author": "Deer Cat Games",
+      "link": ""
+    },
+    {
+      "name": "Defend The Tank",
+      "author": "LittleGames",
+      "link": ""
+    },
+    {
+      "name": "Super Smash Flash",
+      "author": "McLeodGaming",
+      "link": "clsupersmashflash"
+    },
+    {
+      "name": "Raft Wars 2",
+      "author": "Martijn Kunst and TinyDobbins",
+      "link": "clraftwars2"
+    },
+    {
+      "name": "Raft Wars",
+      "author": "Martijn Kunst and TinyDobbins",
+      "link": "clraftwars"
+    },
+    {
+      "name": "Cell Machine",
+      "author": "Sam Hogan",
+      "link": ""
+    },
+    {
+      "name": "Evil Glitch",
+      "author": "Agar3s",
+      "link": "clevilglitch"
+    },
+    {
+      "name": "Little Alchemy 2",
+      "author": "Jakub Koziol",
+      "link": "cllittlealchemy2"
+    },
+    {
+      "name": "Rabbit Samurai",
+      "author": "IP Eliseenko Maksim Andreevich",
+      "link": ""
+    },
+    {
+      "name": "Rabbit Samurai 2",
+      "author": "IP Eliseenko Maksim Andreevich",
+      "link": ""
+    },
+    {
+      "name": "Apple Knight Mini Dungeons",
+      "author": "Limitless LLC",
+      "link": ""
+    },
+    {
+      "name": "Bloons Tower Defense",
+      "author": "Ninja Kiwi",
+      "link": "clbloonsTD1"
+    },
+    {
+      "name": "Bloons Tower Defense 2",
+      "author": "Ninja Kiwi",
+      "link": "clbloonsTD2"
+    },
+    {
+      "name": "1 On 1 Soccer",
+      "author": "Adam Wardle",
+      "link": "cl1on1soccer"
+    },
+    {
+      "name": "Edge Lets Surf",
+      "author": "Microsoft",
+      "link": ""
+    },
+    {
+      "name": "Cut The Rope",
+      "author": "ZeptoLab",
+      "link": "clcuttherope"
+    },
+    {
+      "name": "Cut The Rope Time Travel",
+      "author": "ZeptoLab",
+      "link": "clcuttheropetimetravel"
+    },
+    {
+      "name": "Cut The Rope Holiday Gift",
+      "author": "ZeptoLab",
+      "link": "clcuttheropeholiday"
+    },
+    {
+      "name": "CSGO Clicker",
+      "author": "GOECORUSH Media, s. r. o.",
+      "link": "clcsgoclicker"
+    },
+    {
+      "name": "Nut Simulator",
+      "author": "f0e",
+      "link": ""
+    },
+    {
+      "name": "We Become What We Behold",
+      "author": "Mismatch Studio",
+      "link": "clwebecomewhatwebehold"
+    },
+    {
+      "name": "Tactical Weapon Pack 2",
+      "author": "Wilkin Games",
+      "link": ""
+    },
+    {
+      "name": "Push The Square",
+      "author": "Raul Moreno Tamayo",
+      "link": ""
+    },
+    {
+      "name": "Bloxorz",
+      "author": "Frank Buss",
+      "link": "clbloxorz"
+    },
+    {
+      "name": "N-gon",
+      "author": "Quadape",
+      "link": "clngon"
+    },
+    {
+      "name": "Geometry Dash",
+      "author": "RobTop Games",
+      "link": "clgdlite"
+    },
+    {
+      "name": "Cover Orange Wild West",
+      "author": "Johnny-K",
+      "link": ""
+    },
+    {
+      "name": "Cover Orange Wild Gangsters",
+      "author": "Johnny-K",
+      "link": "clcoverorangejourneygangsters"
+    },
+    {
+      "name": "Dogeminer",
+      "author": "rkn",
+      "link": "cldogeminer"
+    },
+    {
+      "name": "Dogeminer 2",
+      "author": "rkn",
+      "link": "cldogeminer2"
+    },
+    {
+      "name": "Temple Run 2",
+      "author": "Imangi Studios",
+      "link": "cltemplerun2"
+    },
+    {
+      "name": "Google Baseball",
+      "author": "Google",
+      "link": "clgooglebaseball"
+    },
+    {
+      "name": "2048",
+      "author": "Gabrielle Cirulli",
+      "link": "cl2048"
+    },
+    {
+      "name": "Rolly Vortex",
+      "author": "Voodoo",
+      "link": "clrollyvortex"
+    },
+    {
+      "name": "Flappy Bird",
+      "author": "Dong Nguyen",
+      "link": "clflappybird"
+    },
+    {
+      "name": "Alien Hominid",
+      "author": "The Behemoth",
+      "link": "clalienhominid"
+    },
+    {
+      "name": "Duck Life",
+      "author": "Wix Games",
+      "link": "clducklife"
+    },
+    {
+      "name": "Duck Life 2",
+      "author": "Wix Games",
+      "link": "clducklife2"
+    },
+    {
+      "name": "Duck Life 3 Evolution",
+      "author": "Wix Games",
+      "link": "clducklife3"
+    },
+    {
+      "name": "Duck Life 4",
+      "author": "Wix Games",
+      "link": "clducklife4"
+    },
+    {
+      "name": "Fireboy and Watergirl",
+      "author": "Oslo Albet",
+      "link": "clfireboyandwatergirl"
+    },
+    {
+      "name": "Google Kitsune",
+      "author": "Google",
+      "link": ""
+    },
+    {
+      "name": "Swerve",
+      "author": "PlayCanvas",
+      "link": "clswerve"
+    },
+    {
+      "name": "Matrix Rampage",
+      "author": "T. Suriyathep",
+      "link": "clmatrixrampage"
+    },
+    {
+      "name": "Rubiks Cube",
+      "author": "Google",
+      "link": ""
+    },
+    {
+      "name": "Insectonator",
+      "author": "Denis Kukushkin",
+      "link": ""
+    },
+    {
+      "name": "Duck Hunt",
+      "author": "Nintendo",
+      "link": "clduckhunt"
+    },
+    {
+      "name": "T-Rex Game",
+      "author": "Google",
+      "link": "clgoogledino"
+    }
+  ],
+  "flashGames": [
+    {
+      "name": "BMX Park",
+      "author": "CBC",
+      "link": ""
+    },
+    {
+      "name": "The Heist",
+      "author": "JohnnyTwoShoes",
+      "link": "clhei$t"
+    },
+    {
+      "name": "Age Of War",
+      "author": "Louissi",
+      "link": "clageofwar"
+    }
+  ],
+  "fnfGames": [
+    {
+      "name": "FNF Sonic EXE Mod",
+      "author": "The Funkin' Crew Inc. and RightBurstUltra",
+      "link": "clfnfsonicexe"
+    },
+    {
+      "name": "FNF Tricky Mod",
+      "author": "By The Funkin' Crew Inc. and Banbuds, KadeDev, and Rozebud",
+      "link": "clfnftricky"
+    },
+    {
+      "name": "FNF Accelerant Hank Mod",
+      "author": "The Funkin' Crew Inc. and TheBlueHatted",
+      "link": "clfnfhank"
+    },
+    {
+      "name": "FNF Whitty Mod",
+      "author": "The Funkin' Crew Inc. and NateAnim8 , KadeDev , and SockClip",
+      "link": "clfnfwhitty"
+    },
+    {
+      "name": "FNF Imposter V3 Mod",
+      "author": "The Funkin' Crew Inc. and Clowfoe",
+      "link": "clfnfimposter3"
+    },
+    {
+      "name": "FNF Garcello Mod",
+      "author": "The Funkin' Crew Inc. and Taeyai",
+      "link": "clgarcello"
+    },
+    {
+      "name": "FNF Slender Mod",
+      "author": "The Funkin' Crew Inc. and MrFlamin",
+      "link": ""
+    },
+    {
+      "name": "FNF Huggy Wuggy Mod",
+      "author": "The Funkin' Crew Inc. and Boyfnffriend",
+      "link": ""
+    },
+    {
+      "name": "FNF Shaggy X Matt Mod",
+      "author": "The Funkin' Crew Inc. and srPerez and Sulyare",
+      "link": "clfnfshaggyxmatt"
+    },
+    {
+      "name": "FNF Hex Mod",
+      "author": "The Funkin' Crew Inc. and MrFlamin",
+      "link": "clfnfhex"
+    },
+    {
+      "name": "FNF Matt Mod",
+      "author": "The Funkin' Crew Inc. and hayley_c0ntrol",
+      "link": "clmattv2"
+    },
+    {
+      "name": "FNF Kapi Arcade Showdown Mod",
+      "author": "The Funkin' Crew Inc. and PaperKitty",
+      "link": "clkapi"
+    },
+    {
+      "name": "FNF Tabi Mod",
+      "author": "The Funkin' Crew Inc. and Homskiy",
+      "link": "cltabi"
+    },
+    {
+      "name": "FNF Camellia Mod",
+      "author": "The Funkin' Crew Inc. and xer0_dr3amz",
+      "link": "clfnfcamelliarudeblaster"
+    },
+    {
+      "name": "FNF Nonsense Mod",
+      "author": "The Funkin' Crew Inc. and NonsenseHumor",
+      "link": "clvsnonsense"
+    },
+    {
+      "name": "FNF QT Mod",
+      "author": "The Funkin' Crew Inc. and Hazardous24 and CountNightshade",
+      "link": "clfnfqt"
+    },
+    {
+      "name": "FNF Doki Doki Mod",
+      "author": "The Funkin' Crew Inc. and Team TBD",
+      "link": "clfnfdokitakeoverplus"
+    },
+    {
+      "name": "FNF Mid-Fight Masses Mod",
+      "author": "The Funkin' Crew Inc. and Dokki. doodlez",
+      "link": "clfnfmidfight"
+    }
+  ],
+  "gbaGames": [
+    {
+      "name": "Super Street Fighter 2 Turbo Revival",
+      "author": "Capcom",
+      "link": ""
+    },
+    {
+      "name": "Super Street Fighter 3 Alpha",
+      "author": "Capcom",
+      "link": "clstreetfighteralpha3"
+    },
+    {
+      "name": "Mortal Komat Advance",
+      "author": "Virtucraft",
+      "link": "clmortalkombatadvance"
+    },
+    {
+      "name": "Pokemon Fire Red",
+      "author": "Game Freak",
+      "link": "clpokemonfirered"
+    },
+    {
+      "name": "Pokemon Sapphire",
+      "author": "Game Freak",
+      "link": "clpokemonsapphire"
+    },
+    {
+      "name": "Pokemon Emerald",
+      "author": "Game Freak",
+      "link": "clpokemonemerald"
+    },
+    {
+      "name": "Pokemon Ruby",
+      "author": "Game Freak",
+      "link": "clpokemonruby"
+    },
+    {
+      "name": "Mario Kart Super Circuit",
+      "author": "Intelligent Systems",
+      "link": "clmariokartsupercircuit"
+    },
+    {
+      "name": "Mario Party Advance",
+      "author": "Hudson Soft",
+      "link": "clMario Party Advance"
+    },
+    {
+      "name": "Monopoly",
+      "author": "Sculptured Software",
+      "link": ""
+    },
+    {
+      "name": "Kirby and the & The Amazing Mirror",
+      "author": "HAL Laboratory, Flagship and Dimps",
+      "link": "clkirbyandtheamzingmirror"
+    }
+  ],
+  "papasGames": [
+    {
+      "name": "Papa's Burgeria",
+      "author": "Flipline Studios",
+      "link": "clpapasburgerIIIAAAAA"
+    },
+    {
+      "name": "Papa's Pizzeria",
+      "author": "Flipline Studios",
+      "link": "clpizzapapa"
+    },
+    {
+      "name": "Papa's Freezeria",
+      "author": "Flipline Studios",
+      "link": "clpapasfreezeria"
+    },
+    {
+      "name": "Papa's Cupcakeria",
+      "author": "Flipline Studios",
+      "link": "clpapascupcakeria"
+    },
+    {
+      "name": "Papa's Scooperia",
+      "author": "Flipline Studios",
+      "link": "clpapasscooperia"
+    },
+    {
+      "name": "Papa's Donuteria",
+      "author": "Flipline Studios",
+      "link": "clpapadonut"
+    },
+    {
+      "name": "Papa's Pancakeria",
+      "author": "Flipline Studios",
+      "link": "clpapaspancakeria"
+    },
+    {
+      "name": "Papa's Hot Doggeria",
+      "author": "Flipline Studios",
+      "link": "clpapashotdoggeria"
+    },
+    {
+      "name": "Papa's Sushiria",
+      "author": "Flipline Studios",
+      "link": "clpapassushiria"
+    },
+    {
+      "name": "Papa's Taco Mia",
+      "author": "Flipline Studios",
+      "link": "clpapastacomia"
+    },
+    {
+      "name": "Papa's Wingeria",
+      "author": "Flipline Studios",
+      "link": "clpapaswingeria"
+    },
+    {
+      "name": "Papa's Pastaria",
+      "author": "Flipline Studios",
+      "link": "clpapaspastaria"
+    },
+    {
+      "name": "Papa's Cheeseria",
+      "author": "Flipline Studios",
+      "link": "clpapascheeseria"
+    },
+    {
+      "name": "Papa's Bakeria",
+      "author": "Flipline Studios",
+      "link": "clpapabakeria"
+    }
+  ]
+}

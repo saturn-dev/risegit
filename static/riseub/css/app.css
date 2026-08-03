@@ -1,0 +1,990 @@
+/* ── Palettes ──────────────────────────────────────────────────── */
+:root,
+[data-theme="mint"] {
+	--accent-rgb: 127 240 196;
+	--accent: #7ff0c4;
+	--accent-hi: #a5f7d8;
+	--accent-deep: #1f7d5e;
+	--accent-ink: #04211a;
+	--bg: #0a0c0b;
+	--bg-2: #0e1110;
+}
+
+[data-theme="midnight"] {
+	--accent-rgb: 91 157 255;
+	--accent: #5b9dff;
+	--accent-hi: #8ab8ff;
+	--accent-deep: #1e4a94;
+	--accent-ink: #041028;
+	--bg: #090b11;
+	--bg-2: #0d1119;
+}
+
+[data-theme="dusk"] {
+	--accent-rgb: 167 139 250;
+	--accent: #a78bfa;
+	--accent-hi: #c3adff;
+	--accent-deep: #573ba3;
+	--accent-ink: #120826;
+	--bg: #0b0910;
+	--bg-2: #100d17;
+}
+
+[data-theme="ember"] {
+	--accent-rgb: 255 122 61;
+	--accent: #ff7a3d;
+	--accent-hi: #ff9d70;
+	--accent-deep: #a33a11;
+	--accent-ink: #260b02;
+	--bg: #0e0a08;
+	--bg-2: #130e0b;
+}
+
+[data-theme="rose"] {
+	--accent-rgb: 251 113 133;
+	--accent: #fb7185;
+	--accent-hi: #fda4b2;
+	--accent-deep: #9b1036;
+	--accent-ink: #26050f;
+	--bg: #0f090b;
+	--bg-2: #140d10;
+}
+
+[data-theme="nord"] {
+	--accent-rgb: 143 199 216;
+	--accent: #8fc7d8;
+	--accent-hi: #b6deee;
+	--accent-deep: #3a6b7e;
+	--accent-ink: #041b24;
+	--bg: #090b0d;
+	--bg-2: #0d1113;
+}
+
+[data-theme="sand"] {
+	--accent-rgb: 224 192 151;
+	--accent: #e0c097;
+	--accent-hi: #f1dbba;
+	--accent-deep: #86673d;
+	--accent-ink: #241a09;
+	--bg: #0e0c09;
+	--bg-2: #13100c;
+}
+
+[data-theme="sakura"] {
+	--accent-rgb: 247 168 196;
+	--accent: #f7a8c4;
+	--accent-hi: #ffcadd;
+	--accent-deep: #9e4767;
+	--accent-ink: #260a16;
+	--bg: #0f0b0d;
+	--bg-2: #140f12;
+}
+
+/* ── Shared tokens ─────────────────────────────────────────────── */
+:root {
+	color-scheme: dark;
+
+	--surface: rgb(255 255 255 / 0.035);
+	--surface-2: rgb(255 255 255 / 0.06);
+	--surface-3: rgb(255 255 255 / 0.09);
+	--glass: rgb(255 255 255 / 0.045);
+	/* Nearly opaque: the shell no longer leans on a backdrop blur. */
+	--shell: rgb(10 12 14 / 0.94);
+	--line: rgb(255 255 255 / 0.08);
+	--line-2: rgb(255 255 255 / 0.14);
+
+	--text: #f2f4f5;
+	--text-dim: #a0a6ab;
+	--text-mute: #6a7075;
+
+	--accent-low: rgb(var(--accent-rgb) / 0.13);
+	--accent-mid: rgb(var(--accent-rgb) / 0.28);
+	--accent-glow: rgb(var(--accent-rgb) / 0.35);
+
+	--r-xs: 8px;
+	--r-sm: 10px;
+	--r: 13px;
+	--r-lg: 18px;
+	--r-xl: 24px;
+
+	--ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--spring: cubic-bezier(0.34, 1.32, 0.58, 1);
+
+	--taskbar-h: 56px;
+	--gutter: clamp(1rem, 3.2vw, 2.75rem);
+
+	/* Drawn X for native search-clear buttons, which we can't colour directly. */
+	--x-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+html,
+body {
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+body {
+	font-family:
+		"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	background: var(--bg);
+	color: var(--text);
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	transition: background 0.5s var(--ease);
+}
+
+/* Tilted dot lattice + soft accent bloom */
+body::before {
+	content: "";
+	position: fixed;
+	inset: -50%;
+	width: 200%;
+	height: 200%;
+	background-image: radial-gradient(
+		circle,
+		rgb(255 255 255 / 0.035) 1px,
+		transparent 1px
+	);
+	background-size: 22px 22px;
+	transform: rotate(15deg);
+	pointer-events: none;
+	z-index: 0;
+	animation: grid-drift 90s linear infinite;
+	mask-image: radial-gradient(
+		120% 90% at 50% 0%,
+		#000 20%,
+		rgb(0 0 0 / 0.35) 70%,
+		transparent 100%
+	);
+}
+
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	background:
+		radial-gradient(
+			760px 420px at 6% -10%,
+			rgb(var(--accent-rgb) / 0.1),
+			transparent 68%
+		),
+		radial-gradient(
+			620px 380px at 98% 2%,
+			rgb(var(--accent-rgb) / 0.05),
+			transparent 70%
+		),
+		radial-gradient(
+			900px 520px at 50% 112%,
+			rgb(var(--accent-rgb) / 0.06),
+			transparent 70%
+		);
+	transition: background 0.5s var(--ease);
+}
+
+html.no-grid body::before {
+	display: none;
+}
+
+@keyframes grid-drift {
+	to {
+		background-position: 440px 440px;
+	}
+}
+
+/* Palette swaps repaint everything - never transition them. */
+html.theme-swapping *,
+html.theme-swapping *::before,
+html.theme-swapping *::after {
+	transition: none !important;
+}
+
+html.no-motion *,
+html.no-motion *::before,
+html.no-motion *::after {
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body::before {
+		animation: none;
+	}
+}
+
+::selection {
+	background: var(--accent);
+	color: var(--accent-ink);
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(255 255 255 / 0.12);
+	border: 3px solid transparent;
+	background-clip: padding-box;
+	border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgb(255 255 255 / 0.22);
+	background-clip: padding-box;
+}
+
+.lucide {
+	width: 1.15em;
+	height: 1.15em;
+	flex-shrink: 0;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.lucide--fill {
+	fill: currentColor;
+	stroke: none;
+}
+
+/* ── Panels ─────────────────────────────────────────────────────── */
+.panel {
+	position: relative;
+	z-index: 1;
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.view-stack {
+	position: relative;
+	z-index: 1;
+	flex: 1 1 auto;
+	display: flex;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.view {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+	animation: view-in 0.4s var(--ease) both;
+}
+
+@keyframes view-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+/* ── Placeholder pages (Games / AI) ───────────────────────────── */
+.placeholder {
+	flex: 1;
+	display: grid;
+	place-items: center;
+	padding: 2rem var(--gutter) calc(var(--taskbar-h) + 2rem);
+	text-align: center;
+}
+
+.placeholder__card {
+	max-width: 460px;
+	padding: 2.6rem 2rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r-xl);
+	background: var(--surface);
+	animation: pop-up 0.6s var(--spring) both;
+}
+
+@keyframes pop-up {
+	from {
+		opacity: 0;
+		transform: translateY(18px) scale(0.97);
+	}
+}
+
+.placeholder__icon {
+	width: 54px;
+	height: 54px;
+	margin: 0 auto 1.1rem;
+	display: grid;
+	place-items: center;
+	border-radius: var(--r-lg);
+	background: var(--accent-low);
+	border: 1px solid var(--accent-mid);
+	color: var(--accent);
+}
+
+.placeholder__icon .lucide {
+	width: 26px;
+	height: 26px;
+}
+
+.placeholder h2 {
+	margin: 0 0 0.5rem;
+	font-size: 1.3rem;
+	font-weight: 760;
+	letter-spacing: -0.02em;
+}
+
+.placeholder p {
+	margin: 0;
+	color: var(--text-dim);
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.placeholder__tag {
+	display: inline-block;
+	margin-top: 1.2rem;
+	padding: 0.3rem 0.75rem;
+	border-radius: 999px;
+	background: var(--accent-low);
+	border: 1px solid var(--accent-mid);
+	color: var(--accent);
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+/* ── Bottom taskbar ────────────────────────────────────────────── */
+.taskbar {
+	position: fixed;
+	left: 50%;
+	bottom: 14px;
+	transform: translateX(-50%);
+	z-index: 60;
+	display: flex;
+	align-items: center;
+	gap: 0.1rem;
+	padding: 0.3rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-lg);
+	background: var(--shell);
+	box-shadow:
+		0 18px 45px rgb(0 0 0 / 0.55),
+		0 2px 8px rgb(0 0 0 / 0.4),
+		inset 0 1px 0 rgb(255 255 255 / 0.07);
+	animation: taskbar-rise 0.7s var(--spring) both;
+}
+
+@keyframes taskbar-rise {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 130%);
+	}
+}
+
+.taskbar__indicator {
+	position: absolute;
+	top: 0.3rem;
+	bottom: 0.3rem;
+	left: 0;
+	width: 0;
+	border-radius: var(--r-sm);
+	background: linear-gradient(
+		180deg,
+		rgb(var(--accent-rgb) / 0.22),
+		rgb(var(--accent-rgb) / 0.09)
+	);
+	border: 1px solid rgb(var(--accent-rgb) / 0.3);
+	box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+	opacity: 0;
+	pointer-events: none;
+	transition:
+		transform 0.5s var(--spring),
+		width 0.5s var(--spring),
+		opacity 0.3s var(--ease);
+}
+
+.taskbar.is-ready .taskbar__indicator {
+	opacity: 1;
+}
+
+.taskbar__item {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	width: 42px;
+	height: 40px;
+	border: none;
+	background: none;
+	border-radius: var(--r-sm);
+	color: var(--text-dim);
+	text-decoration: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		color 0.28s var(--ease),
+		transform 0.4s var(--spring);
+}
+
+.taskbar__item .lucide {
+	width: 19px;
+	height: 19px;
+	transition:
+		transform 0.45s var(--spring),
+		filter 0.3s var(--ease);
+}
+
+.taskbar__item::after {
+	content: attr(data-label);
+	position: absolute;
+	bottom: calc(100% + 12px);
+	left: 50%;
+	padding: 0.3rem 0.55rem;
+	border-radius: var(--r-xs);
+	background: rgb(12 14 16 / 0.95);
+	border: 1px solid var(--line-2);
+	color: var(--text);
+	font-size: 0.7rem;
+	font-weight: 620;
+	letter-spacing: 0.01em;
+	white-space: nowrap;
+	opacity: 0;
+	transform: translate(-50%, 6px) scale(0.92);
+	pointer-events: none;
+	transition:
+		opacity 0.22s var(--ease),
+		transform 0.3s var(--spring);
+	box-shadow: 0 8px 20px rgb(0 0 0 / 0.5);
+}
+
+.taskbar__item:hover::after,
+.taskbar__item:focus-visible::after {
+	opacity: 1;
+	transform: translate(-50%, 0) scale(1);
+}
+
+.taskbar__item:hover {
+	color: var(--text);
+	transform: translateY(-2px);
+}
+
+.taskbar__item:hover .lucide {
+	transform: scale(1.16);
+}
+
+.taskbar__item:active {
+	transform: translateY(0) scale(0.94);
+}
+
+.taskbar__item.on {
+	color: var(--accent);
+}
+
+.taskbar__item.on .lucide {
+	filter: drop-shadow(0 0 9px var(--accent-glow));
+}
+
+.taskbar__sep {
+	width: 1px;
+	height: 22px;
+	margin: 0 0.25rem;
+	background: var(--line-2);
+	flex-shrink: 0;
+}
+
+/* ── Address bar ───────────────────────────────────────────────── */
+.proxy-header {
+	position: relative;
+	z-index: 20;
+	flex-shrink: 0;
+	padding: 0.25rem 0.6rem 0.5rem;
+}
+
+/* Full-width chrome bar, the way a browser toolbar actually sits. */
+.address-bar {
+	display: flex;
+	gap: 0.2rem;
+	align-items: center;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: none;
+	border-radius: 0;
+}
+
+/* Direct children only - the suggestion list lives inside this bar too. */
+.address-bar > button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	line-height: 0;
+	flex-shrink: 0;
+	border: 1px solid transparent;
+	border-radius: var(--r-xs);
+	background: transparent;
+	color: var(--text-dim);
+	cursor: pointer;
+	font: inherit;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.25s var(--spring);
+}
+
+.address-bar > button:hover {
+	background: var(--surface-2);
+	color: var(--text);
+}
+
+.address-bar > button:active {
+	transform: scale(0.92);
+}
+
+.address-field {
+	position: relative;
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	align-items: center;
+}
+
+.address-field__icon {
+	position: absolute;
+	left: 0.8rem;
+	width: 15px;
+	height: 15px;
+	color: var(--text-mute);
+	pointer-events: none;
+	transition: color 0.2s var(--ease);
+}
+
+.address-field:focus-within .address-field__icon {
+	color: var(--accent);
+}
+
+.address-input {
+	width: 100%;
+	height: 34px;
+	border: 1px solid transparent;
+	border-radius: var(--r-sm);
+	background: rgb(255 255 255 / 0.055);
+	color: var(--text);
+	padding: 0 1rem 0 2.3rem;
+	font: inherit;
+	font-size: 0.88rem;
+	outline: none;
+	transition:
+		background 0.2s var(--ease),
+		border-color 0.2s var(--ease),
+		box-shadow 0.25s var(--ease);
+}
+
+.address-input::placeholder {
+	color: var(--text-mute);
+}
+
+.address-input:focus {
+	background: rgb(255 255 255 / 0.07);
+	border-color: rgb(var(--accent-rgb) / 0.45);
+	box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.1);
+}
+
+/* ── Omnibox suggestions ───────────────────────────────────────── */
+.suggest-list {
+	position: absolute;
+	top: calc(100% + 8px);
+	left: 0;
+	right: 0;
+	margin: 0;
+	padding: 0.3rem;
+	list-style: none;
+	background: rgb(14 16 18 / 0.96);
+	border: 1px solid var(--line-2);
+	border-radius: var(--r);
+	box-shadow: 0 24px 50px rgb(0 0 0 / 0.65);
+	z-index: 1200;
+	max-height: 340px;
+	overflow-y: auto;
+	animation: pop-in 0.2s var(--ease);
+}
+
+@keyframes pop-in {
+	from {
+		opacity: 0;
+		transform: translateY(-6px);
+	}
+}
+
+.suggest-item {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	width: 100%;
+	height: 40px;
+	padding: 0 0.7rem;
+	border: none;
+	border-radius: var(--r-xs);
+	background: transparent;
+	color: var(--text);
+	font: inherit;
+	font-size: 0.87rem;
+	line-height: 1;
+	text-align: left;
+	cursor: pointer;
+	transition: background 0.15s var(--ease);
+}
+
+.suggest-item:hover,
+.suggest-item.active {
+	background: var(--surface-2);
+}
+
+.suggest-item.active {
+	box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.suggest-icon {
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	color: var(--text-mute);
+}
+
+.suggest-icon .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.suggest-item:hover .suggest-icon,
+.suggest-item.active .suggest-icon {
+	color: var(--accent);
+}
+
+.suggest-text {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.suggest-hint {
+	flex-shrink: 0;
+	padding: 0.2rem 0.45rem;
+	border-radius: 999px;
+	background: rgb(255 255 255 / 0.06);
+	font-size: 0.6rem;
+	color: var(--text-mute);
+	text-transform: uppercase;
+	letter-spacing: 0.07em;
+	font-weight: 700;
+	opacity: 0;
+	transition: opacity 0.18s var(--ease);
+}
+
+.suggest-item:hover .suggest-hint,
+.suggest-item.active .suggest-hint {
+	opacity: 1;
+}
+
+/* ── Proxy loading overlay ─────────────────────────────────────── */
+.proxy-loader {
+	position: absolute;
+	inset: 0;
+	z-index: 15;
+	display: grid;
+	place-items: center;
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.proxy-loader.is-visible,
+.proxy-loader.is-hiding {
+	visibility: visible;
+}
+
+.proxy-loader.is-visible {
+	pointer-events: auto;
+}
+
+.proxy-loader__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgb(8 9 11 / 0.7);
+	backdrop-filter: blur(16px) saturate(1.2);
+	-webkit-backdrop-filter: blur(16px) saturate(1.2);
+	opacity: 0;
+	will-change: opacity;
+	transition: opacity 0.5s var(--ease);
+}
+
+.proxy-loader.is-visible .proxy-loader__backdrop {
+	opacity: 1;
+	transition-duration: 0.35s;
+}
+
+.proxy-loader.is-hiding .proxy-loader__backdrop {
+	opacity: 0;
+	transition-duration: 0.6s;
+}
+
+.proxy-loader__content {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	transform: scale(0.94) translateY(8px);
+	opacity: 0;
+	will-change: transform, opacity;
+	transition:
+		transform 0.5s var(--ease),
+		opacity 0.45s var(--ease);
+}
+
+.proxy-loader.is-visible .proxy-loader__content {
+	transform: scale(1) translateY(0);
+	opacity: 1;
+	transition-duration: 0.4s;
+}
+
+.proxy-loader.is-hiding .proxy-loader__content {
+	transform: scale(0.92) translateY(10px);
+	opacity: 0;
+	transition-duration: 0.55s;
+}
+
+.proxy-loader__mark {
+	position: relative;
+	width: 112px;
+	height: 112px;
+	display: grid;
+	place-items: center;
+	animation: proxy-loader-float 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.proxy-loader.is-hiding .proxy-loader__mark {
+	animation: none;
+}
+
+.proxy-loader__ring {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	/* The sweep keeps moving while the gradient stays put. */
+	animation: ring-spin 2.6s linear infinite;
+}
+
+@keyframes ring-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Deep end of the palette - the mark should read as weight, not glare. */
+.proxy-loader__grad-a {
+	stop-color: color-mix(in srgb, var(--accent-deep) 70%, #000);
+}
+
+.proxy-loader__grad-b {
+	stop-color: var(--accent-deep);
+}
+
+.proxy-loader__ring-track {
+	fill: none;
+	stroke: rgb(255 255 255 / 0.08);
+	stroke-width: 2.5;
+}
+
+.proxy-loader__ring-progress {
+	fill: none;
+	stroke-width: 2.5;
+	stroke-linecap: round;
+	transform: rotate(-90deg);
+	transform-origin: 50% 50%;
+	stroke-dasharray: 100;
+	stroke-dashoffset: 100;
+	transition: stroke-dashoffset 0.45s var(--ease);
+}
+
+.proxy-loader__logo {
+	width: 54px;
+	height: 54px;
+	filter: drop-shadow(0 0 20px var(--accent-glow));
+}
+
+.proxy-loader__logo-a {
+	stop-color: color-mix(in srgb, var(--accent-deep) 65%, #000);
+}
+
+.proxy-loader__logo-b {
+	stop-color: var(--accent-deep);
+}
+
+@keyframes proxy-loader-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
+
+/* ── Mono: flat, no bloom, accent is whatever you picked ───────── */
+[data-theme="mono"] {
+	--bg: #0b0c0d;
+	--bg-2: #101213;
+}
+
+[data-theme="mono"] body::after {
+	background: none;
+}
+
+[data-theme="mono"] * {
+	--accent-glow: transparent;
+}
+
+[data-theme="mono"] .taskbar__item.on .lucide,
+[data-theme="mono"] .newtab__logo,
+[data-theme="mono"] .dock__mark,
+[data-theme="mono"] .media-brand__icon,
+[data-theme="mono"] .proxy-loader__logo,
+[data-theme="mono"] .ai-empty__logo,
+[data-theme="mono"] .gate__logo {
+	filter: none;
+}
+
+[data-theme="mono"] .fx {
+	text-shadow: none !important;
+	filter: none !important;
+}
+
+[data-theme="mono"] .now__bar div,
+[data-theme="mono"] .mini__bar div {
+	box-shadow: none;
+}
+
+[data-theme="mono"] .cal__cell.is-today {
+	box-shadow: none;
+}
+
+/* ── Colour picker row (settings) ──────────────────────────────── */
+.accent-pick {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1rem;
+	padding: 0.75rem 0.85rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.03);
+}
+
+.accent-pick__swatch {
+	position: relative;
+	width: 42px;
+	height: 42px;
+	flex-shrink: 0;
+	border-radius: var(--r-sm);
+	border: 1px solid var(--line-2);
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.accent-pick__swatch input {
+	position: absolute;
+	inset: -25%;
+	width: 150%;
+	height: 150%;
+	border: none;
+	padding: 0;
+	background: none;
+	cursor: pointer;
+}
+
+.accent-pick__meta strong {
+	display: block;
+	font-size: 0.84rem;
+	font-weight: 660;
+}
+
+.accent-pick__meta span {
+	font-size: 0.74rem;
+	color: var(--text-mute);
+}
+
+.accent-pick__presets {
+	display: flex;
+	gap: 0.3rem;
+	margin-left: auto;
+}
+
+.accent-pick__preset {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	border: 1px solid rgb(0 0 0 / 0.4);
+	cursor: pointer;
+	transition: transform 0.3s var(--spring);
+}
+
+.accent-pick__preset:hover {
+	transform: scale(1.15);
+}
+
+/* ── Slider-driven tuning ───────────────────────────────────────── */
+:root {
+	--ui-scale: 1;
+	--radius-scale: 1;
+	--glow-scale: 1;
+}
+
+html {
+	font-size: calc(16px * var(--ui-scale));
+}
+
+:root {
+	--r-xs: calc(8px * var(--radius-scale));
+	--r-sm: calc(10px * var(--radius-scale));
+	--r: calc(13px * var(--radius-scale));
+	--r-lg: calc(18px * var(--radius-scale));
+	--r-xl: calc(24px * var(--radius-scale));
+	--accent-glow: rgb(var(--accent-rgb) / calc(0.35 * var(--glow-scale)));
+}
+
+html.no-blur *,
+html.no-blur *::before,
+html.no-blur *::after {
+	backdrop-filter: none !important;
+	-webkit-backdrop-filter: none !important;
+}

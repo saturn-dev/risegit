@@ -1,0 +1,2413 @@
+/* ══ Toasts ══════════════════════════════════════════════════════ */
+.toast-host {
+	position: fixed;
+	right: 16px;
+	bottom: calc(var(--taskbar-h) + 26px);
+	z-index: 80;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	width: min(340px, calc(100vw - 32px));
+	pointer-events: none;
+}
+
+.toast {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.65rem;
+	padding: 0.75rem 0.8rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r);
+	background: rgb(15 17 19 / 0.94);
+	box-shadow: 0 16px 40px rgb(0 0 0 / 0.55);
+	overflow: hidden;
+	pointer-events: auto;
+	opacity: 0;
+	transform: translateX(28px) scale(0.96);
+	transition:
+		opacity 0.3s var(--ease),
+		transform 0.45s var(--spring);
+}
+
+.toast.is-in {
+	opacity: 1;
+	transform: translateX(0) scale(1);
+}
+
+.toast.is-out {
+	opacity: 0;
+	transform: translateX(28px) scale(0.96);
+}
+
+.toast__icon {
+	display: grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+	border-radius: 9px;
+	background: var(--accent-low);
+	border: 1px solid var(--accent-mid);
+	color: var(--accent);
+}
+
+.toast__icon .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.toast--error .toast__icon {
+	background: rgb(255 90 70 / 0.14);
+	border-color: rgb(255 90 70 / 0.3);
+	color: #ff9d86;
+}
+
+.toast__text {
+	flex: 1;
+	min-width: 0;
+}
+
+.toast__text strong {
+	display: block;
+	font-size: 0.83rem;
+	font-weight: 680;
+	letter-spacing: -0.005em;
+}
+
+.toast__text p {
+	margin: 0.15rem 0 0;
+	font-size: 0.76rem;
+	line-height: 1.45;
+	color: var(--text-dim);
+	overflow-wrap: anywhere;
+}
+
+.toast__x {
+	display: grid;
+	place-items: center;
+	width: 22px;
+	height: 22px;
+	flex-shrink: 0;
+	border: none;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.toast__x:hover {
+	background: rgb(255 255 255 / 0.1);
+	color: var(--text);
+}
+
+.toast__x .lucide {
+	width: 13px;
+	height: 13px;
+}
+
+.toast__life {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	height: 2px;
+	width: 100%;
+	transform-origin: left;
+	background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+	animation: toast-life linear forwards;
+}
+
+.toast.is-held .toast__life {
+	animation-play-state: paused;
+}
+
+@keyframes toast-life {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0);
+	}
+}
+
+/* ══ System tray ═════════════════════════════════════════════════ */
+.systray {
+	position: fixed;
+	right: 14px;
+	bottom: 14px;
+	z-index: 61;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.3rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-lg);
+	background: var(--shell);
+	box-shadow:
+		0 18px 45px rgb(0 0 0 / 0.55),
+		inset 0 1px 0 rgb(255 255 255 / 0.07);
+	animation: taskbar-rise 0.7s 0.06s var(--spring) both;
+}
+
+.systray__btn {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	height: 40px;
+	padding: 0 0.6rem;
+	border: 1px solid transparent;
+	border-radius: var(--r-sm);
+	background: transparent;
+	color: var(--text-dim);
+	font: inherit;
+	cursor: pointer;
+	transition:
+		background 0.25s var(--ease),
+		color 0.25s var(--ease),
+		transform 0.35s var(--spring);
+}
+
+.systray__btn:hover {
+	background: rgb(255 255 255 / 0.07);
+	color: var(--text);
+}
+
+.systray__btn:active {
+	transform: scale(0.95);
+}
+
+.systray__btn.is-on {
+	background: var(--accent-low);
+	border-color: rgb(var(--accent-rgb) / 0.3);
+	color: var(--accent);
+}
+
+.systray__apps {
+	width: 38px;
+	justify-content: center;
+	padding: 0;
+}
+
+.systray__apps .lucide {
+	width: 18px;
+	height: 18px;
+	transition: transform 0.4s var(--spring);
+}
+
+.systray__apps.is-on .lucide {
+	transform: rotate(180deg);
+}
+
+.systray__music {
+	width: 38px;
+	justify-content: center;
+	padding: 0;
+	position: relative;
+	animation: pop-up 0.45s var(--spring) both;
+}
+
+.systray__music .lucide {
+	width: 17px;
+	height: 17px;
+}
+
+.systray__music.is-playing {
+	color: var(--accent);
+}
+
+.systray__music .systray__eq {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	display: none;
+	align-items: flex-end;
+	gap: 1.5px;
+	height: 8px;
+}
+
+.systray__music.is-playing .systray__eq {
+	display: flex;
+}
+
+.systray__eq i {
+	width: 2px;
+	height: 40%;
+	border-radius: 2px;
+	background: var(--accent);
+	animation: eq-bounce 0.9s ease-in-out infinite;
+}
+
+.systray__eq i:nth-child(2) {
+	animation-delay: 0.15s;
+}
+
+.systray__eq i:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.systray__clock {
+	gap: 0.55rem;
+	padding: 0 0.7rem;
+}
+
+.systray__clock.has-pulse {
+	animation: tray-pulse 0.9s var(--ease);
+}
+
+@keyframes tray-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0);
+	}
+	40% {
+		box-shadow: 0 0 0 4px rgb(var(--accent-rgb) / 0.25);
+	}
+}
+
+.systray__battery {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.systray__pct {
+	font-size: 0.68rem;
+	font-weight: 650;
+	color: var(--text-dim);
+	font-variant-numeric: tabular-nums;
+}
+
+.battery {
+	width: 26px;
+	height: 24px;
+	fill: none;
+	stroke: currentColor;
+}
+
+.battery__shell {
+	stroke: rgb(255 255 255 / 0.45);
+	stroke-width: 1.5;
+	fill: none;
+}
+
+.battery__cap {
+	stroke: rgb(255 255 255 / 0.45);
+	stroke-width: 2.4;
+	stroke-linecap: round;
+}
+
+.battery__fill {
+	fill: var(--accent);
+	stroke: none;
+	transition: width 0.6s var(--ease);
+}
+
+.battery__bolt {
+	fill: var(--bg);
+	stroke: none;
+}
+
+.systray__time {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	line-height: 1.15;
+}
+
+.systray__time strong {
+	font-size: 0.8rem;
+	font-weight: 680;
+	color: var(--text);
+	font-variant-numeric: tabular-nums;
+}
+
+.systray__time span {
+	font-size: 0.63rem;
+	color: var(--text-mute);
+	font-variant-numeric: tabular-nums;
+}
+
+/* ══ Flyout panels (tray / apps / mini player) ══════════════════ */
+.tray-panel,
+.apps-panel,
+.mini-panel {
+	position: fixed;
+	right: 14px;
+	bottom: calc(var(--taskbar-h) + 22px);
+	z-index: 62;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-xl);
+	background: rgb(14 16 18 / 0.95);
+	box-shadow: 0 26px 60px rgb(0 0 0 / 0.6);
+	opacity: 0;
+	transform: translateY(14px) scale(0.97);
+	transform-origin: bottom right;
+	transition:
+		opacity 0.24s var(--ease),
+		transform 0.4s var(--spring);
+}
+
+.tray-panel.is-open,
+.apps-panel.is-open,
+.mini-panel.is-open {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.tray-panel {
+	width: min(340px, calc(100vw - 28px));
+	/* Sized to its content - an inner scrollbar clipped the calendar. */
+	overflow: visible;
+	padding: 0.6rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	border: none;
+	box-shadow: none;
+}
+
+.tray-card {
+	border: 1px solid var(--line);
+	border-radius: var(--r-lg);
+	background: rgb(20 22 25 / 0.96);
+	box-shadow: 0 18px 44px rgb(0 0 0 / 0.5);
+	padding: 0.85rem 0.9rem;
+	animation: tray-card-in 0.45s var(--ease) both;
+}
+
+.tray-card:nth-child(2) {
+	animation-delay: 0.06s;
+}
+
+@keyframes tray-card-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+}
+
+.tray-card__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.6rem;
+	margin-bottom: 0.7rem;
+}
+
+.tray-card__head h3 {
+	margin: 0;
+	font-size: 0.88rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+.tray-icon-btn {
+	display: grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	border: 1px solid var(--line);
+	border-radius: 9px;
+	background: rgb(255 255 255 / 0.04);
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.3s var(--spring);
+}
+
+.tray-icon-btn:hover {
+	background: rgb(255 255 255 / 0.1);
+	color: var(--text);
+	transform: scale(1.06);
+}
+
+.tray-icon-btn .lucide {
+	width: 14px;
+	height: 14px;
+}
+
+.tray-notes {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.tray-empty {
+	margin: 0;
+	padding: 2.4rem 0;
+	text-align: center;
+	font-size: 0.8rem;
+	color: var(--text-mute);
+}
+
+.tray-note {
+	display: flex;
+	gap: 0.6rem;
+	padding: 0.6rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.03);
+	animation: tray-card-in 0.35s var(--ease) both;
+}
+
+.tray-note__icon {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	border-radius: 8px;
+	background: var(--accent-low);
+	color: var(--accent);
+}
+
+.tray-note__icon .lucide {
+	width: 14px;
+	height: 14px;
+}
+
+.tray-note--error .tray-note__icon {
+	background: rgb(255 90 70 / 0.14);
+	color: #ff9d86;
+}
+
+.tray-note strong {
+	display: block;
+	font-size: 0.79rem;
+	font-weight: 650;
+}
+
+.tray-note p {
+	margin: 0.15rem 0 0;
+	font-size: 0.73rem;
+	color: var(--text-dim);
+	line-height: 1.45;
+}
+
+.tray-note__time {
+	display: block;
+	margin-top: 0.25rem;
+	font-size: 0.66rem;
+	color: var(--text-mute);
+}
+
+/* ── Calendar ── */
+.cal__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 0.6rem;
+}
+
+.cal__head strong {
+	font-size: 0.82rem;
+	font-weight: 680;
+}
+
+.cal__nav {
+	display: flex;
+	gap: 0.2rem;
+}
+
+.cal__nav button {
+	display: grid;
+	place-items: center;
+	width: 24px;
+	height: 24px;
+	border: none;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.cal__nav button:hover {
+	background: rgb(255 255 255 / 0.08);
+	color: var(--text);
+}
+
+.cal__nav .lucide {
+	width: 14px;
+	height: 14px;
+}
+
+.cal__grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 2px;
+}
+
+.cal__day {
+	padding: 0.3rem 0;
+	text-align: center;
+	font-size: 0.65rem;
+	font-weight: 700;
+	color: var(--text-mute);
+}
+
+.cal__cell {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 9px;
+	font-size: 0.75rem;
+	color: var(--text-dim);
+	font-variant-numeric: tabular-nums;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.cal__cell:hover {
+	background: rgb(255 255 255 / 0.06);
+	color: var(--text);
+}
+
+.cal__cell.is-muted {
+	color: rgb(255 255 255 / 0.18);
+}
+
+.cal__cell.is-today {
+	background: var(--accent);
+	color: var(--accent-ink);
+	font-weight: 750;
+	box-shadow: 0 0 16px var(--accent-glow);
+}
+
+/* ══ Apps launcher ══════════════════════════════════════════════ */
+.apps-panel {
+	width: min(392px, calc(100vw - 28px));
+	padding: 0.9rem;
+	right: 58px;
+}
+
+.apps-panel__head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.6rem;
+	margin-bottom: 0.75rem;
+}
+
+.apps-panel__label {
+	margin: 0;
+	font-size: 0.62rem;
+	font-weight: 750;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
+.apps-panel__hint {
+	font-size: 0.64rem;
+	color: rgb(255 255 255 / 0.28);
+}
+
+.apps-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 0.35rem;
+}
+
+.app-tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.6rem 0.25rem 0.55rem;
+	border: 1px solid transparent;
+	border-radius: var(--r);
+	cursor: pointer;
+	user-select: none;
+	transition:
+		background 0.22s var(--ease),
+		transform 0.3s var(--spring),
+		border-color 0.22s var(--ease);
+	animation: tile-in 0.4s var(--ease) both;
+}
+
+@keyframes tile-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px) scale(0.94);
+	}
+}
+
+.app-tile:hover {
+	background: rgb(255 255 255 / 0.06);
+	border-color: var(--line);
+	transform: translateY(-3px);
+}
+
+.app-tile.is-dragging {
+	z-index: 3;
+	opacity: 0.9;
+	transform: scale(1.06);
+	background: rgb(255 255 255 / 0.1);
+	box-shadow: 0 14px 30px rgb(0 0 0 / 0.5);
+	transition: none;
+}
+
+.app-tile.is-shifted {
+	opacity: 0.55;
+}
+
+.app-tile__icon {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	border-radius: 12px;
+	overflow: hidden;
+	background: linear-gradient(150deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05));
+	border: 1px solid var(--line);
+}
+
+.app-tile__letter {
+	font-size: 0.95rem;
+	font-weight: 800;
+	color: var(--text-dim);
+}
+
+.app-tile__icon img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	padding: 8px;
+	background: #14171a;
+}
+
+.app-tile__name {
+	max-width: 100%;
+	font-size: 0.66rem;
+	font-weight: 620;
+	color: var(--text-dim);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.apps-add {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.45rem;
+	width: 100%;
+	margin-top: 0.7rem;
+	padding: 0.6rem;
+	border: 1px dashed var(--line-2);
+	border-radius: var(--r);
+	background: transparent;
+	color: var(--text-dim);
+	font: inherit;
+	font-size: 0.78rem;
+	font-weight: 640;
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		border-color 0.2s var(--ease);
+}
+
+.apps-add:hover {
+	background: var(--accent-low);
+	border-color: rgb(var(--accent-rgb) / 0.4);
+	border-style: solid;
+	color: var(--accent);
+}
+
+.apps-add .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+/* ══ Mini player ════════════════════════════════════════════════ */
+.mini-panel {
+	width: 300px;
+	padding: 0.85rem;
+	right: 100px;
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+}
+
+.mini__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.mini__label {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	font-size: 0.6rem;
+	font-weight: 750;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
+.mini__label .lucide {
+	width: 13px;
+	height: 13px;
+	color: var(--accent);
+}
+
+.mini__dots {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border: none;
+	border-radius: 8px;
+	background: transparent;
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.mini__dots:hover {
+	background: rgb(255 255 255 / 0.08);
+	color: var(--text);
+}
+
+.mini__dots .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.mini__body {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+}
+
+.mini__art {
+	display: grid;
+	place-items: center;
+	width: 54px;
+	height: 54px;
+	flex-shrink: 0;
+	border-radius: var(--r);
+	overflow: hidden;
+	background: rgb(255 255 255 / 0.06);
+	border: 1px solid var(--line);
+	color: var(--text-mute);
+}
+
+.mini__art img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.mini__meta {
+	min-width: 0;
+}
+
+.mini__meta strong {
+	display: block;
+	font-size: 0.84rem;
+	font-weight: 680;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mini__meta span {
+	font-size: 0.73rem;
+	color: var(--text-mute);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+}
+
+.mini__bar {
+	height: 4px;
+	border-radius: 99px;
+	background: rgb(255 255 255 / 0.1);
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.mini__bar div {
+	height: 100%;
+	width: 0;
+	border-radius: 99px;
+	background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+}
+
+.mini__times {
+	display: flex;
+	justify-content: space-between;
+	margin-top: -0.35rem;
+	font-size: 0.65rem;
+	color: var(--text-mute);
+	font-variant-numeric: tabular-nums;
+}
+
+.mini__controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.mini__btn {
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--text-dim);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.3s var(--spring);
+}
+
+.mini__btn:hover {
+	background: rgb(255 255 255 / 0.08);
+	color: var(--text);
+	transform: scale(1.08);
+}
+
+.mini__btn .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.mini__play {
+	display: grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	border: none;
+	border-radius: 999px;
+	background: linear-gradient(140deg, var(--accent-hi), var(--accent));
+	color: var(--accent-ink);
+	cursor: pointer;
+	box-shadow: 0 6px 18px rgb(var(--accent-rgb) / 0.3);
+	transition:
+		transform 0.3s var(--spring),
+		filter 0.2s var(--ease);
+}
+
+.mini__play:hover {
+	transform: scale(1.07);
+	filter: brightness(1.06);
+}
+
+.mini__play .lucide {
+	width: 17px;
+	height: 17px;
+}
+
+/* Pop-out window body */
+.pop {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	height: 100%;
+	padding: 0.9rem;
+}
+
+.pop__art {
+	display: grid;
+	place-items: center;
+	width: 68px;
+	height: 68px;
+	flex-shrink: 0;
+	border-radius: 14px;
+	overflow: hidden;
+	background: rgb(255 255 255 / 0.06);
+	color: var(--text-mute);
+}
+
+.pop__art img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.pop__meta {
+	flex: 1;
+	min-width: 0;
+}
+
+.pop__meta strong {
+	display: block;
+	font-size: 0.9rem;
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pop__meta span {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-size: 0.76rem;
+	color: var(--text-mute);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pop__bar {
+	height: 4px;
+	border-radius: 99px;
+	background: rgb(255 255 255 / 0.12);
+	overflow: hidden;
+}
+
+.pop__bar div {
+	height: 100%;
+	background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+}
+
+.pop__controls {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.pop__controls button {
+	display: grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--text);
+	cursor: pointer;
+}
+
+.pop__controls button:hover {
+	background: rgb(255 255 255 / 0.1);
+}
+
+.pop__controls .lucide {
+	width: 16px;
+	height: 16px;
+}
+
+.pop__play {
+	background: var(--accent) !important;
+	color: var(--accent-ink) !important;
+	width: 40px !important;
+	height: 40px !important;
+}
+
+/* ══ Modals ═════════════════════════════════════════════════════ */
+.modal-root {
+	position: fixed;
+	inset: 0;
+	z-index: 90;
+	display: grid;
+	place-items: center;
+	padding: 1.5rem;
+}
+
+.modal-backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgb(6 7 9 / 0.66);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	opacity: 0;
+	transition: opacity 0.28s var(--ease);
+}
+
+.modal-root.is-open .modal-backdrop {
+	opacity: 1;
+}
+
+.modal {
+	position: relative;
+	width: min(560px, 100%);
+	max-height: min(84vh, 760px);
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-xl);
+	background: rgb(17 19 21 / 0.98);
+	box-shadow: 0 32px 80px rgb(0 0 0 / 0.65);
+	opacity: 0;
+	transform: translateY(18px) scale(0.96);
+	transition:
+		opacity 0.26s var(--ease),
+		transform 0.45s var(--spring);
+	overflow: hidden;
+}
+
+.modal--sm {
+	width: min(420px, 100%);
+}
+
+.modal--lg {
+	width: min(760px, 100%);
+}
+
+.modal-root.is-open .modal {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+}
+
+.modal-root.is-closing .modal {
+	opacity: 0;
+	transform: translateY(10px) scale(0.97);
+}
+
+.modal__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.15rem 1.25rem 0.85rem;
+	border-bottom: 1px solid var(--line);
+}
+
+.modal__title {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 740;
+	letter-spacing: -0.02em;
+}
+
+.modal__sub {
+	margin: 0.25rem 0 0;
+	font-size: 0.79rem;
+	color: var(--text-mute);
+	line-height: 1.5;
+}
+
+.modal__x {
+	display: grid;
+	place-items: center;
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	border: 1px solid var(--line);
+	border-radius: 9px;
+	background: rgb(255 255 255 / 0.04);
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.3s var(--spring);
+}
+
+.modal__x:hover {
+	background: rgb(255 255 255 / 0.1);
+	color: var(--text);
+	transform: rotate(90deg);
+}
+
+.modal__x .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.modal__body {
+	padding: 1.1rem 1.25rem 1.25rem;
+	overflow-y: auto;
+}
+
+.form-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.field-label {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
+.field-input {
+	width: 100%;
+	height: 44px;
+	padding: 0 0.9rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.04);
+	color: var(--text);
+	font: inherit;
+	font-size: 0.9rem;
+	outline: none;
+	transition:
+		border-color 0.2s var(--ease),
+		box-shadow 0.25s var(--ease);
+}
+
+.field-input:focus {
+	border-color: rgb(var(--accent-rgb) / 0.5);
+	box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.12);
+}
+
+.form-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	margin-top: 0.6rem;
+}
+
+.btn-line--accent {
+	border-color: rgb(var(--accent-rgb) / 0.45);
+	background: linear-gradient(140deg, var(--accent-hi), var(--accent));
+	color: var(--accent-ink);
+}
+
+.btn-line--accent:hover {
+	filter: brightness(1.06);
+}
+
+/* ══ Context menu ═══════════════════════════════════════════════ */
+.ctx-menu {
+	position: fixed;
+	z-index: 95;
+	min-width: 168px;
+	padding: 0.28rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r);
+	background: rgb(18 20 22 / 0.98);
+	box-shadow: 0 20px 46px rgb(0 0 0 / 0.6);
+	opacity: 0;
+	transform: scale(0.94);
+	transform-origin: top left;
+	transition:
+		opacity 0.16s var(--ease),
+		transform 0.28s var(--spring);
+}
+
+.ctx-menu.is-open {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.ctx-menu__item {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	width: 100%;
+	padding: 0.5rem 0.6rem;
+	border: none;
+	border-radius: var(--r-xs);
+	background: transparent;
+	color: var(--text);
+	font: inherit;
+	font-size: 0.81rem;
+	font-weight: 600;
+	text-align: left;
+	cursor: pointer;
+	transition: background 0.16s var(--ease);
+}
+
+.ctx-menu__item:hover {
+	background: rgb(255 255 255 / 0.08);
+}
+
+.ctx-menu__item .lucide {
+	width: 15px;
+	height: 15px;
+	color: var(--text-mute);
+}
+
+.ctx-menu__item.is-danger {
+	color: #ff9d86;
+}
+
+.ctx-menu__item.is-danger .lucide {
+	color: #ff9d86;
+}
+
+@media (max-width: 620px) {
+	.apps-panel {
+		right: 14px;
+	}
+
+	.apps-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.mini-panel {
+		right: 14px;
+	}
+
+	.systray__time span {
+		display: none;
+	}
+}
+
+/* ══ Playlist picker ════════════════════════════════════════════ */
+.pl-picker {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	max-height: 46vh;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.pl-row__meta strong,
+.pl-row__meta span {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pl-row {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	padding: 0.5rem;
+	border: 1px solid transparent;
+	border-radius: var(--r);
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		transform 0.25s var(--ease);
+}
+
+.pl-row:hover {
+	background: rgb(255 255 255 / 0.06);
+	transform: translateX(2px);
+}
+
+.pl-row.is-in {
+	background: var(--accent-low);
+	border-color: rgb(var(--accent-rgb) / 0.28);
+}
+
+.pl-row__art {
+	display: grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	flex-shrink: 0;
+	border-radius: var(--r-sm);
+	overflow: hidden;
+	background: rgb(255 255 255 / 0.06);
+	color: var(--text-mute);
+}
+
+.pl-row__art img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.pl-row__art .lucide {
+	width: 16px;
+	height: 16px;
+}
+
+.pl-row__meta {
+	flex: 1;
+	min-width: 0;
+}
+
+.pl-row__meta strong {
+	display: block;
+	font-size: 0.85rem;
+	font-weight: 660;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.pl-row__meta span {
+	font-size: 0.72rem;
+	color: var(--text-mute);
+}
+
+.pl-row__state {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	flex-shrink: 0;
+	border-radius: 999px;
+	color: var(--text-mute);
+}
+
+.pl-row.is-in .pl-row__state {
+	color: var(--accent);
+}
+
+.pl-row__state .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.pl-new {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+	margin-top: 0.35rem;
+	padding: 0.65rem 0.6rem;
+	border: 1px dashed var(--line-2);
+	border-radius: var(--r);
+	background: transparent;
+	color: var(--text-dim);
+	font: inherit;
+	font-size: 0.82rem;
+	font-weight: 640;
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		border-color 0.2s var(--ease);
+}
+
+.pl-new:hover {
+	background: var(--accent-low);
+	border-color: rgb(var(--accent-rgb) / 0.4);
+	border-style: solid;
+	color: var(--accent);
+}
+
+.pl-new .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.tray-more {
+	margin: 0.2rem 0 0;
+	text-align: center;
+	font-size: 0.68rem;
+	color: var(--text-mute);
+}
+
+.systray__divider {
+	width: 1px;
+	height: 20px;
+	background: var(--line-2);
+	flex-shrink: 0;
+}
+
+/* ══ Taskbar styles ═════════════════════════════════════════════ */
+
+/* The chrome picks up the palette instead of sitting on flat black. */
+:root {
+	--shell: color-mix(in srgb, var(--bg-2) 95%, transparent);
+	--shell-solid: color-mix(in srgb, var(--bg-2) 96%, #fff 3%);
+}
+
+.taskbar,
+.dock,
+.systray {
+	background: var(--shell);
+}
+
+/* - Filled: one solid bar across the bottom, nothing floating - */
+html[data-taskbar="bar"] {
+	--taskbar-h: 54px;
+}
+
+html[data-taskbar="bar"] body {
+	padding-bottom: var(--taskbar-h);
+}
+
+html[data-taskbar="bar"] .taskbar {
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: var(--taskbar-h);
+	transform: none;
+	padding: 0;
+	gap: 0.15rem;
+	border: none;
+	border-top: 1px solid var(--line);
+	border-radius: 0;
+	background: var(--shell-solid);
+	box-shadow: none;
+	justify-content: center;
+	animation: none;
+}
+
+html[data-taskbar="bar"] .taskbar__indicator {
+	top: 6px;
+	bottom: 6px;
+	border-radius: var(--r-xs);
+}
+
+html[data-taskbar="bar"] .dock,
+html[data-taskbar="bar"] .systray {
+	bottom: 0;
+	height: var(--taskbar-h);
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+	animation: none;
+	z-index: 62;
+}
+
+html[data-taskbar="bar"] .dock {
+	left: 0;
+	padding-left: 1rem;
+}
+
+html[data-taskbar="bar"] .systray {
+	right: 0;
+	padding-right: 0.6rem;
+}
+
+/* - Sidebar left / right: a vertical rail down one edge - */
+html[data-taskbar="left"],
+html[data-taskbar="right"] {
+	--taskbar-h: 0px;
+	--rail-w: 68px;
+}
+
+html[data-taskbar="left"] body {
+	padding-left: var(--rail-w);
+}
+
+html[data-taskbar="right"] body {
+	padding-right: var(--rail-w);
+}
+
+html[data-taskbar="left"] .taskbar,
+html[data-taskbar="right"] .taskbar {
+	top: 0;
+	bottom: 0;
+	width: var(--rail-w);
+	height: auto;
+	transform: none;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.3rem;
+	padding: 0.5rem 0;
+	border: none;
+	border-radius: 0;
+	background: var(--shell-solid);
+	box-shadow: none;
+	animation: none;
+}
+
+html[data-taskbar="left"] .taskbar {
+	left: 0;
+	right: auto;
+	border-right: 1px solid var(--line);
+}
+
+html[data-taskbar="right"] .taskbar {
+	right: 0;
+	left: auto;
+	border-left: 1px solid var(--line);
+}
+
+html[data-taskbar="left"] .taskbar__item,
+html[data-taskbar="right"] .taskbar__item {
+	width: 46px;
+	height: 46px;
+	border-radius: var(--r);
+}
+
+html[data-taskbar="left"] .taskbar__item .lucide,
+html[data-taskbar="right"] .taskbar__item .lucide {
+	width: 20px;
+	height: 20px;
+}
+
+/* Tooltips point inward instead of upward. */
+html[data-taskbar="left"] .taskbar__item::after,
+html[data-taskbar="right"] .taskbar__item::after {
+	bottom: auto;
+	top: 50%;
+	transform: translate(0, -50%) scale(0.92);
+}
+
+html[data-taskbar="left"] .taskbar__item::after {
+	left: calc(100% + 10px);
+}
+
+html[data-taskbar="right"] .taskbar__item::after {
+	left: auto;
+	right: calc(100% + 10px);
+}
+
+html[data-taskbar="left"] .taskbar__item:hover::after,
+html[data-taskbar="right"] .taskbar__item:hover::after {
+	transform: translate(0, -50%) scale(1);
+}
+
+/* The moving pill runs vertically here. */
+html[data-taskbar="left"] .taskbar__indicator,
+html[data-taskbar="right"] .taskbar__indicator {
+	left: 50%;
+	margin-left: -23px;
+	top: 0;
+	bottom: auto;
+	width: 46px;
+	height: 46px;
+	border-radius: var(--r);
+}
+
+html[data-taskbar="left"] .taskbar__sep,
+html[data-taskbar="right"] .taskbar__sep {
+	width: 24px;
+	height: 1px;
+	margin: 0.3rem 0;
+}
+
+html[data-taskbar="left"] .dock,
+html[data-taskbar="right"] .dock {
+	bottom: 14px;
+}
+
+html[data-taskbar="left"] .dock {
+	left: calc(var(--rail-w) + 14px);
+}
+
+html[data-taskbar="right"] .systray {
+	right: calc(var(--rail-w) + 14px);
+}
+
+html[data-taskbar="left"] .tray-panel,
+html[data-taskbar="left"] .apps-panel,
+html[data-taskbar="left"] .mini-panel,
+html[data-taskbar="right"] .tray-panel,
+html[data-taskbar="right"] .apps-panel,
+html[data-taskbar="right"] .mini-panel {
+	bottom: 18px;
+}
+
+html[data-taskbar="left"] .tray-panel,
+html[data-taskbar="left"] .apps-panel,
+html[data-taskbar="left"] .mini-panel,
+html[data-taskbar="left"] .toast-host {
+	left: calc(var(--rail-w) + 14px);
+	right: auto;
+	transform-origin: bottom left;
+}
+
+html[data-taskbar="right"] .tray-panel,
+html[data-taskbar="right"] .apps-panel,
+html[data-taskbar="right"] .mini-panel,
+html[data-taskbar="right"] .toast-host {
+	right: calc(var(--rail-w) + 14px);
+}
+
+/* - Halo: floating pill with an accent bloom under it - */
+html[data-taskbar="halo"] .taskbar {
+	border-color: rgb(var(--accent-rgb) / 0.28);
+	box-shadow:
+		0 18px 45px rgb(0 0 0 / 0.5),
+		0 0 40px rgb(var(--accent-rgb) / 0.16),
+		inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+html[data-taskbar="halo"] .taskbar::before {
+	content: "";
+	position: absolute;
+	inset: auto 12% -14px;
+	height: 22px;
+	border-radius: 999px;
+	background: rgb(var(--accent-rgb) / 0.35);
+	filter: blur(18px);
+	pointer-events: none;
+	z-index: -1;
+}
+
+html[data-taskbar="halo"] .dock,
+html[data-taskbar="halo"] .systray {
+	border-color: rgb(var(--accent-rgb) / 0.22);
+	box-shadow:
+		0 18px 45px rgb(0 0 0 / 0.5),
+		0 0 30px rgb(var(--accent-rgb) / 0.12);
+}
+
+html[data-taskbar="halo"] .taskbar__item.on {
+	background: var(--accent-low);
+	border-radius: var(--r-sm);
+}
+
+/* Vertical rails: scale in place instead of drifting upward. */
+html[data-taskbar="left"] .taskbar__item:hover,
+html[data-taskbar="right"] .taskbar__item:hover {
+	transform: scale(1.08);
+}
+
+html[data-taskbar="left"] .taskbar__item:active,
+html[data-taskbar="right"] .taskbar__item:active {
+	transform: scale(0.94);
+}
+
+/* The dock and tray ride the rail: brand on top, clock on the bottom. */
+html[data-taskbar="left"] .dock,
+html[data-taskbar="right"] .dock {
+	top: 12px;
+	bottom: auto;
+	flex-direction: column;
+	gap: 0.4rem;
+	width: var(--rail-w);
+	padding: 0.5rem 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+	z-index: 62;
+}
+
+html[data-taskbar="left"] .dock {
+	left: 0;
+}
+
+html[data-taskbar="right"] .dock {
+	left: auto;
+	right: 0;
+}
+
+html[data-taskbar="left"] .dock__sep,
+html[data-taskbar="right"] .dock__sep {
+	width: 26px;
+	height: 1px;
+}
+
+html[data-taskbar="left"] .dock__who,
+html[data-taskbar="right"] .dock__who {
+	display: none;
+}
+
+html[data-taskbar="left"] .dock__profile,
+html[data-taskbar="right"] .dock__profile {
+	padding: 0.2rem;
+}
+
+html[data-taskbar="left"] .systray,
+html[data-taskbar="right"] .systray {
+	top: auto;
+	bottom: 10px;
+	flex-direction: column;
+	gap: 0.3rem;
+	width: var(--rail-w);
+	padding: 0.4rem 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	box-shadow: none;
+	z-index: 62;
+}
+
+html[data-taskbar="left"] .systray {
+	left: 0;
+	right: auto;
+}
+
+html[data-taskbar="right"] .systray {
+	right: 0;
+	left: auto;
+}
+
+html[data-taskbar="left"] .systray__clock,
+html[data-taskbar="right"] .systray__clock {
+	flex-direction: column;
+	gap: 0.15rem;
+	height: auto;
+	padding: 0.35rem 0.2rem;
+}
+
+html[data-taskbar="left"] .systray__divider,
+html[data-taskbar="right"] .systray__divider {
+	width: 22px;
+	height: 1px;
+}
+
+html[data-taskbar="left"] .systray__pct,
+html[data-taskbar="right"] .systray__pct {
+	display: none;
+}
+
+html[data-taskbar="left"] .systray__time strong,
+html[data-taskbar="right"] .systray__time strong {
+	font-size: 0.7rem;
+}
+
+/* Small square mark in rail mode, not the wordmark. */
+html[data-taskbar="left"] .dock__mark,
+html[data-taskbar="right"] .dock__mark {
+	display: grid;
+	place-items: center;
+	height: auto;
+	width: 100%;
+}
+
+html[data-taskbar="left"] .dock__mark .rise-mark,
+html[data-taskbar="right"] .dock__mark .rise-mark {
+	width: 36px;
+	height: 36px;
+	display: block;
+	filter: drop-shadow(0 0 12px rgb(var(--accent-rgb) / 0.4));
+}
+
+html[data-taskbar="left"] .dock__mark .rise-logo,
+html[data-taskbar="right"] .dock__mark .rise-logo {
+	height: 26px;
+}
+
+/* ── Calendar reminders ─────────────────────────────────────────── */
+.cal__cell {
+	cursor: default;
+}
+
+.cal__cell[data-day] {
+	cursor: context-menu;
+}
+
+.cal__bell {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	display: grid;
+	place-items: center;
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	background: var(--accent);
+	color: var(--accent-ink);
+}
+
+.cal__bell .lucide {
+	width: 8px;
+	height: 8px;
+	stroke-width: 3;
+}
+
+.cal__cell.has-note {
+	font-weight: 720;
+	color: var(--text);
+}
+
+/* Tooltip showing what the reminder is. */
+.cal__cell[data-note]::after {
+	content: attr(data-note);
+	position: absolute;
+	bottom: calc(100% + 8px);
+	left: 50%;
+	z-index: 5;
+	max-width: 180px;
+	padding: 0.35rem 0.55rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-xs);
+	background: rgb(12 14 16 / 0.97);
+	color: var(--text);
+	font-size: 0.68rem;
+	font-weight: 600;
+	line-height: 1.35;
+	white-space: normal;
+	width: max-content;
+	text-align: left;
+	opacity: 0;
+	transform: translate(-50%, 5px);
+	pointer-events: none;
+	transition:
+		opacity 0.2s var(--ease),
+		transform 0.28s var(--spring);
+	box-shadow: 0 10px 24px rgb(0 0 0 / 0.5);
+}
+
+.cal__cell[data-note]:hover::after {
+	opacity: 1;
+	transform: translate(-50%, 0);
+}
+
+/* ── Pop-out player ─────────────────────────────────────────────── */
+.pop__title {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.pop__title > span {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.pop__title.is-scrolling > span {
+	animation: pop-marquee 14s linear infinite;
+	padding-right: 2.5rem;
+}
+
+.pop__title.is-scrolling i {
+	font-style: normal;
+	padding-left: 2.5rem;
+}
+
+.pop__title.is-scrolling:hover > span {
+	animation-play-state: paused;
+}
+
+@keyframes pop-marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+/* Card layout mirrors the now-playing sidebar. */
+.pop--card {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 0.5rem;
+	padding: 0.85rem;
+	text-align: center;
+	overflow: hidden;
+	min-height: 0;
+}
+
+.pop--card .pop__cover {
+	flex: 0 0 auto;
+	width: min(100%, calc(100vh - 9.5rem));
+	aspect-ratio: 1 / 1;
+	max-height: none;
+	min-height: 0;
+	min-width: 0;
+	margin: 0 auto;
+	display: grid;
+	place-items: center;
+	border-radius: var(--r-lg);
+	overflow: hidden;
+	background: rgb(255 255 255 / 0.06);
+	border: 1px solid var(--line);
+	color: var(--text-mute);
+}
+
+.pop--card .pop__cover img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.pop--card .pop__meta,
+.pop--card .pop__bar,
+.pop--card .pop__controls {
+	flex: 0 0 auto;
+	min-width: 0;
+	width: 100%;
+}
+
+.pop--card .pop__meta {
+	overflow: hidden;
+}
+
+.pop--card .pop__title {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	text-align: center;
+}
+
+/* Keep the marquee from inflating the card's min-content width. */
+.pop--card .pop__title > span {
+	max-width: 100%;
+}
+
+.pop--card .pop__title.is-scrolling > span {
+	display: inline-block;
+	padding-right: 1.25rem;
+	max-width: none;
+}
+
+.pop--card .pop__title.is-scrolling i {
+	padding-left: 1.25rem;
+}
+
+.pop--card .pop__meta > span {
+	display: block;
+	margin-top: 0.1rem;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+.pop--card .pop__controls {
+	justify-content: center;
+}
+
+.pop__bar {
+	cursor: pointer;
+}
+
+.toast__count {
+	display: inline-block;
+	margin-top: 0.25rem;
+	padding: 0.1rem 0.4rem;
+	border-radius: 999px;
+	background: rgb(255 255 255 / 0.1);
+	font-size: 0.65rem;
+	font-weight: 700;
+	color: var(--text-mute);
+}
+
+/* ══ Auto clicker ═══════════════════════════════════════════════ */
+.systray__clicker {
+	position: relative;
+}
+
+.systray__clicker.on {
+	color: var(--accent);
+	background: var(--accent-low);
+}
+
+.systray__clicker .systray__pulse {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background: var(--accent);
+	opacity: 0;
+	transition: opacity 0.2s var(--ease);
+}
+
+.systray__clicker.is-running {
+	color: var(--accent);
+}
+
+.systray__clicker.is-running .systray__pulse {
+	opacity: 1;
+	animation: ac-pulse 1s var(--ease) infinite;
+}
+
+@keyframes ac-pulse {
+	50% {
+		opacity: 0.25;
+		transform: scale(0.7);
+	}
+}
+
+.ac {
+	position: fixed;
+	right: 22px;
+	bottom: calc(var(--taskbar-h) + 22px);
+	z-index: 120;
+	width: 396px;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-lg);
+	background: var(--shell);
+	box-shadow:
+		0 30px 70px rgb(0 0 0 / 0.6),
+		inset 0 1px 0 rgb(255 255 255 / 0.06);
+	opacity: 0;
+	transform: translateY(10px) scale(0.98);
+	transition:
+		opacity 0.22s var(--ease),
+		transform 0.32s var(--spring);
+}
+
+.ac.is-open {
+	opacity: 1;
+	transform: none;
+}
+
+.ac.is-dragging {
+	transition: none;
+	cursor: grabbing;
+}
+
+.ac.is-running {
+	border-color: rgb(var(--accent-rgb) / 0.45);
+}
+
+.ac__bar {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.6rem 0.6rem 0.6rem 0.85rem;
+	border-bottom: 1px solid var(--line);
+	cursor: grab;
+	user-select: none;
+}
+
+.ac__bar:active {
+	cursor: grabbing;
+}
+
+.ac__title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.82rem;
+	letter-spacing: -0.01em;
+}
+
+.ac__title .lucide {
+	width: 15px;
+	height: 15px;
+	color: var(--accent);
+}
+
+.ac__state {
+	margin-left: auto;
+	font-size: 0.7rem;
+	color: var(--accent);
+	font-variant-numeric: tabular-nums;
+}
+
+.ac__x {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border: none;
+	border-radius: var(--r-xs);
+	background: transparent;
+	color: var(--text-mute);
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.ac__x:hover {
+	background: rgb(255 255 255 / 0.08);
+	color: var(--text);
+}
+
+.ac__x .lucide {
+	width: 14px;
+	height: 14px;
+}
+
+.ac__body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.7rem;
+	padding: 0.85rem;
+}
+
+.ac__set {
+	margin: 0;
+	padding: 0.7rem 0.75rem 0.75rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.02);
+}
+
+.ac__set legend {
+	padding: 0 0.35rem;
+	font-size: 0.66rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
+.ac__cols {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.7rem;
+}
+
+.ac__row {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+}
+
+.ac__num {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	flex: 1;
+	min-width: 0;
+	font-size: 0.68rem;
+	color: var(--text-mute);
+}
+
+.ac input[type="number"],
+.ac select {
+	width: 100%;
+	min-width: 0;
+	height: 30px;
+	padding: 0 0.5rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r-xs);
+	background: rgb(255 255 255 / 0.05);
+	color: var(--text);
+	font: inherit;
+	font-size: 0.78rem;
+	outline: none;
+	text-align: right;
+	font-variant-numeric: tabular-nums;
+	transition:
+		border-color 0.2s var(--ease),
+		box-shadow 0.2s var(--ease);
+}
+
+.ac select {
+	text-align: left;
+	cursor: pointer;
+}
+
+.ac input[type="number"]:focus,
+.ac select:focus {
+	border-color: rgb(var(--accent-rgb) / 0.5);
+	box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.12);
+}
+
+/* Label above control: side-by-side wrapped "Mouse button" onto two lines. */
+.ac__field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.28rem;
+	margin-top: 0.6rem;
+	font-size: 0.72rem;
+	color: var(--text-mute);
+}
+
+.ac__field:first-of-type {
+	margin-top: 0.35rem;
+}
+
+.ac__field select {
+	width: 100%;
+}
+
+.ac__radio {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	margin-top: 0.55rem;
+	font-size: 0.74rem;
+	color: var(--text-dim);
+	cursor: pointer;
+}
+
+.ac__radio:first-of-type {
+	margin-top: 0.35rem;
+}
+
+.ac__note {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	margin: 0;
+	padding: 0 0.15rem;
+	font-size: 0.7rem;
+	line-height: 1.45;
+	color: var(--text-mute);
+}
+
+.ac__note .lucide {
+	width: 13px;
+	height: 13px;
+	flex-shrink: 0;
+	color: var(--accent);
+}
+
+.ac__radio input[type="radio"] {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
+	border: 1.5px solid var(--line-2);
+	border-radius: 999px;
+	cursor: pointer;
+	transition:
+		border-color 0.2s var(--ease),
+		box-shadow 0.2s var(--ease);
+}
+
+.ac__radio input[type="radio"]:checked {
+	border-color: var(--accent);
+	box-shadow: inset 0 0 0 3px var(--accent);
+}
+
+.ac__spin {
+	width: 66px !important;
+	flex-shrink: 0;
+}
+
+.ac__actions {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+}
+
+.ac__go,
+.ac__stop,
+.ac__ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	height: 36px;
+	padding: 0 0.85rem;
+	border-radius: var(--r-sm);
+	border: 1px solid var(--line-2);
+	background: rgb(255 255 255 / 0.05);
+	color: var(--text-dim);
+	font: inherit;
+	font-size: 0.78rem;
+	font-weight: 650;
+	cursor: pointer;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		opacity 0.2s var(--ease);
+}
+
+.ac__go {
+	flex: 1;
+	background: var(--accent);
+	border-color: transparent;
+	color: var(--accent-ink);
+}
+
+.ac__stop {
+	flex: 1;
+}
+
+.ac__go .lucide,
+.ac__stop .lucide,
+.ac__ghost .lucide {
+	width: 13px;
+	height: 13px;
+}
+
+.ac__go:disabled,
+.ac__stop:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.ac__stop:not(:disabled) {
+	border-color: rgb(255 157 134 / 0.4);
+	color: #ff9d86;
+}
+
+.ac__go:not(:disabled):hover {
+	filter: brightness(1.06);
+}
+
+.ac__ghost.is-arming {
+	border-color: rgb(var(--accent-rgb) / 0.6);
+	color: var(--accent);
+}
+
+.ac kbd {
+	padding: 0.05rem 0.3rem;
+	border: 1px solid rgb(0 0 0 / 0.2);
+	border-radius: 4px;
+	background: rgb(0 0 0 / 0.16);
+	font: inherit;
+	font-size: 0.68rem;
+}
+
+.ac__stop kbd,
+.ac__ghost kbd {
+	border-color: var(--line-2);
+	background: rgb(255 255 255 / 0.06);
+}
+
+.app-tile__icon--glyph {
+	display: grid;
+	place-items: center;
+	color: var(--accent);
+	background: var(--accent-low);
+}
+
+.app-tile__icon--glyph .lucide {
+	width: 18px;
+	height: 18px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ══ Security ═══════════════════════════════════════════════════ */
+.dd__icon--img {
+	display: grid;
+	place-items: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 5px;
+	overflow: hidden;
+	background: rgb(255 255 255 / 0.06);
+}
+
+.dd__icon--img img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+/*
+ * Click-off mask: everything but the veil is blurred out the moment the tab
+ * loses focus. Fixed + backdrop-free so it can't be scrolled past.
+ */
+.rise-veil {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: none;
+	background: var(--bg);
+}
+
+html.is-veiled .rise-veil {
+	display: block;
+}
+
+html.is-veiled body > *:not(.rise-veil) {
+	filter: blur(22px) saturate(0.4);
+	pointer-events: none;
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="robots" content="noindex" />
+		<meta http-equiv="Cache-Control" content="no-store" />
+		<title>RiseUB</title>
+		<script>
+			(function () {
+				var host = location.hostname;
+				if (
+					location.protocol === "http:" &&
+					host !== "localhost" &&
+					host !== "127.0.0.1" &&
+					host !== "[::1]"
+				) {
+					location.replace(location.href.replace(/^http:/, "https:"));
+				}
+			})();
+		</script>
+		<link rel="stylesheet" href="/css/embed.css" />
+		<script src="/bootstrap-init.js"></script>
+	</head>
+	<body>
+		<div id="embed-root">
+			<div id="embed-stage">
+				<div id="embed-spinner" aria-hidden="true"></div>
+				<div id="embed-step">starting…</div>
+			</div>
+			<iframe
+				id="embed-frame"
+				title="RiseUB browse frame"
+				allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture"
+			></iframe>
+			<div id="embed-error" hidden>
+				<h2>Couldn’t load that page</h2>
+				<p id="embed-error-msg"></p>
+				<button id="embed-retry" type="button">Try again</button>
+			</div>
+		</div>
+		<script type="module" src="/js/embed-page.js"></script>
+	</body>
+</html>

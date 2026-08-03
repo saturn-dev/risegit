@@ -1,0 +1,1003 @@
+/* ── Browse shell ──────────────────────────────────────────────── */
+.browse {
+	flex-direction: row;
+	gap: 0;
+}
+
+.browse__main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+}
+
+/* ── Horizontal tab strip (Chrome style) ───────────────────────── */
+.tabstrip {
+	display: flex;
+	align-items: flex-end;
+	gap: 0.2rem;
+	flex-shrink: 0;
+	padding: 0.4rem 0.5rem 0;
+	min-height: 42px;
+}
+
+html.vertical-tabs .tabstrip {
+	display: none;
+}
+
+/* Shrink-to-fit so the + button sits right after the last tab. */
+.tabstrip__list {
+	position: relative;
+	display: flex;
+	align-items: flex-end;
+	gap: 0.2rem;
+	flex: 0 1 auto;
+	min-width: 0;
+	max-width: calc(100% - 38px);
+	overflow: hidden;
+}
+
+.tab {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+	/* Fixed preferred width - tabs only shrink after the strip is full. */
+	flex: 0 1 280px;
+	width: 280px;
+	min-width: 140px;
+	height: 36px;
+	padding: 0 0.3rem 0 0.55rem;
+	border: 1px solid transparent;
+	border-bottom: none;
+	border-radius: 11px 11px 4px 4px;
+	background: rgb(255 255 255 / 0.03);
+	color: var(--text-dim);
+	cursor: default;
+	user-select: none;
+	overflow: hidden;
+	transition:
+		background 0.22s var(--ease),
+		color 0.22s var(--ease),
+		transform 0.25s var(--ease),
+		box-shadow 0.25s var(--ease);
+}
+
+.tab::after {
+	/* divider between inactive tabs */
+	content: "";
+	position: absolute;
+	right: -0.1rem;
+	top: 25%;
+	bottom: 25%;
+	width: 1px;
+	background: var(--line);
+	opacity: 1;
+	transition: opacity 0.2s var(--ease);
+}
+
+.tab:last-child::after,
+.tab.is-active::after,
+.tab:hover::after {
+	opacity: 0;
+}
+
+.tab:hover {
+	background: rgb(255 255 255 / 0.06);
+	color: var(--text);
+}
+
+.tab.is-active {
+	background: var(--bg-2);
+	border-color: var(--line-2);
+	color: var(--text);
+	box-shadow:
+		0 -1px 0 rgb(var(--accent-rgb) / 0.55) inset,
+		0 -6px 18px rgb(var(--accent-rgb) / 0.06) inset;
+}
+
+.tab.is-dragging {
+	z-index: 6;
+	transition: none;
+	cursor: grabbing;
+	box-shadow: 0 12px 26px rgb(0 0 0 / 0.5);
+	background: var(--bg-2);
+	border-color: var(--line-2);
+}
+
+.tab.is-shifting {
+	transition: transform 0.2s var(--ease);
+}
+
+.tab__fav {
+	position: relative;
+	width: 17px;
+	height: 17px;
+	flex-shrink: 0;
+	display: grid;
+	place-items: center;
+	border-radius: 5px;
+	overflow: hidden;
+	font-size: 0.58rem;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	color: var(--text-dim);
+	text-transform: uppercase;
+}
+
+.tab__fav img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.tab__title {
+	flex: 1;
+	min-width: 0;
+	font-size: 0.76rem;
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	mask-image: linear-gradient(90deg, #000 82%, transparent);
+}
+
+.tab__close {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	flex-shrink: 0;
+	border: none;
+	border-radius: 7px;
+	background: transparent;
+	color: var(--text-mute);
+	cursor: pointer;
+	line-height: 0;
+	opacity: 0;
+	transition:
+		opacity 0.2s var(--ease),
+		background 0.2s var(--ease),
+		color 0.2s var(--ease);
+}
+
+.tab__close .lucide {
+	display: block;
+	width: 13px;
+	height: 13px;
+	margin: 0;
+}
+
+.tab:hover .tab__close,
+.tab.is-active .tab__close {
+	opacity: 1;
+}
+
+.tab__close:hover {
+	background: rgb(255 255 255 / 0.12);
+	color: var(--text);
+}
+
+.tab.is-narrow .tab__title,
+.tab.is-narrow .tab__close {
+	display: none;
+}
+
+.tab__spinner {
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	border: 2px solid rgb(var(--accent-rgb) / 0.25);
+	border-top-color: var(--accent);
+	animation: tab-spin 0.7s linear infinite;
+}
+
+@keyframes tab-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.tabstrip__new {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	flex-shrink: 0;
+	margin-bottom: 3px;
+	border: 1px solid transparent;
+	border-radius: var(--r-xs);
+	background: transparent;
+	color: var(--text-dim);
+	cursor: pointer;
+	transition:
+		background 0.24s var(--ease),
+		color 0.24s var(--ease),
+		box-shadow 0.3s var(--ease);
+}
+
+.tabstrip__new .lucide,
+.side-tabs__new .lucide {
+	transition: transform 0.45s var(--spring);
+}
+
+.tabstrip__new:hover {
+	background: var(--surface-2);
+	color: var(--accent);
+	box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.22);
+}
+
+.tabstrip__new:hover .lucide,
+.side-tabs__new:hover .lucide {
+	transform: rotate(90deg) scale(1.1);
+}
+
+.tabstrip__new:active,
+.side-tabs__new:active {
+	transform: scale(0.9);
+}
+
+/* ── Vertical tab sidebar ──────────────────────────────────────── */
+.browse__side {
+	display: none;
+	width: 226px;
+	transition: width 0.3s var(--ease);
+	flex-shrink: 0;
+	flex-direction: column;
+	padding: 0.85rem 0.6rem calc(var(--taskbar-h) + 1rem);
+	border-right: 1px solid var(--line);
+	background: rgb(255 255 255 / 0.018);
+	overflow-y: auto;
+}
+
+html.vertical-tabs .browse__side {
+	display: flex;
+	animation: side-in 0.4s var(--ease) both;
+}
+
+@keyframes side-in {
+	from {
+		opacity: 0;
+		transform: translateX(-12px);
+	}
+}
+
+.side-tabs__head {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.55rem;
+	margin: 0 0.3rem 0.85rem;
+}
+
+.side-tabs__label {
+	margin: 0;
+	font-size: 0.6rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--text-mute);
+}
+
+.side-tabs {
+	display: flex;
+	flex-direction: column;
+	gap: 0.12rem;
+}
+
+.side-tab {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.5rem 0.55rem;
+	border: 1px solid transparent;
+	border-radius: var(--r-sm);
+	background: transparent;
+	color: var(--text-dim);
+	cursor: default;
+	user-select: none;
+	overflow: hidden;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.25s var(--ease);
+}
+
+.side-tab:hover {
+	background: rgb(255 255 255 / 0.05);
+	color: var(--text);
+	transform: translateX(3px);
+}
+
+/* Newly opened tabs slide in; existing rows stay put on re-render. */
+.side-tab.is-new {
+	animation: side-tab-in 0.42s var(--spring) both;
+}
+
+@keyframes side-tab-in {
+	from {
+		opacity: 0;
+		transform: translateX(-16px) scale(0.96);
+	}
+}
+
+.side-tab .tab__fav {
+	transition: transform 0.4s var(--spring);
+}
+
+.side-tab:hover .tab__fav {
+	transform: scale(1.1);
+}
+
+/* The icon stands on its own - no plate, no ring behind it. */
+.tab__fav {
+	background: none;
+	border-radius: 0;
+	overflow: visible;
+}
+
+.tab__fav img {
+	background: none;
+}
+
+.tab__fav--new {
+	color: var(--text-mute);
+}
+
+.tab__fav--new .lucide {
+	width: 13px;
+	height: 13px;
+	stroke-width: 2.4;
+}
+
+.side-tab .tab__fav--new .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.tab.is-active .tab__fav--new,
+.side-tab.is-active .tab__fav--new {
+	color: var(--accent);
+}
+
+.side-tab.is-active::before {
+	animation: side-bar-in 0.45s var(--spring) both;
+}
+
+@keyframes side-bar-in {
+	from {
+		transform: scaleY(0.2);
+		opacity: 0;
+	}
+}
+
+.side-tabs__label {
+	animation: side-tab-in 0.5s var(--ease) both;
+}
+
+.side-tab.is-active {
+	background: rgb(255 255 255 / 0.07);
+	border-color: var(--line);
+	color: var(--text);
+	font-weight: 650;
+}
+
+.side-tab.is-active::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 22%;
+	bottom: 22%;
+	width: 2px;
+	border-radius: 99px;
+	background: var(--accent);
+	box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.side-tab.is-dragging {
+	z-index: 6;
+	transition: none;
+	cursor: grabbing;
+	background: var(--bg-2);
+	box-shadow: 0 10px 24px rgb(0 0 0 / 0.5);
+}
+
+.side-tab.is-shifting {
+	transition: transform 0.2s var(--ease);
+}
+
+.side-tab .tab__fav {
+	width: 24px;
+	height: 24px;
+	font-size: 0.6rem;
+}
+
+.side-tab .tab__title {
+	font-size: 0.79rem;
+}
+
+.side-tab .tab__close {
+	opacity: 0;
+}
+
+.side-tab:hover .tab__close,
+.side-tab.is-active .tab__close {
+	opacity: 1;
+}
+
+.side-tabs__new {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.45rem;
+	width: 100%;
+	height: 36px;
+	margin: 0.5rem 0 0;
+	padding: 0;
+	flex-shrink: 0;
+	border: 1px dashed var(--line-2);
+	border-radius: var(--r-sm);
+	background: transparent;
+	color: var(--text-dim);
+	font: inherit;
+	font-size: 0.76rem;
+	font-weight: 620;
+	cursor: pointer;
+	transition:
+		background 0.24s var(--ease),
+		color 0.24s var(--ease),
+		border-color 0.24s var(--ease),
+		transform 0.3s var(--spring);
+}
+
+.side-tabs__new .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.side-tabs__new:hover {
+	background: var(--accent-low);
+	border-color: rgb(var(--accent-rgb) / 0.4);
+	border-style: solid;
+	color: var(--accent);
+}
+
+/* ── Frame area ────────────────────────────────────────────────── */
+/* Edge to edge: the taskbar and tray float over the page instead. */
+#sj-frame-wrapper {
+	position: relative;
+	flex: 1 1 auto;
+	min-height: 0;
+	margin: 0;
+	border: none;
+	border-top: 1px solid var(--line);
+	border-radius: 0;
+	background: var(--bg-2);
+	overflow: hidden;
+}
+
+.tab-frame {
+	position: absolute;
+	inset: 0;
+	border: none;
+	width: 100%;
+	height: 100%;
+	background: var(--bg-2);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.tab-frame.is-active {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* ── Split view ──
+ * Two independent browsers side by side, each with its own strip, address bar
+ * and frames. --split is where the seam sits.
+ */
+.browse__main {
+	--split: 50%;
+	flex-direction: row;
+}
+
+/* A pane is [sidebar | column of strip + address bar + frames]. */
+.browse__pane {
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+}
+
+.pane__main {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-width: 0;
+	min-height: 0;
+}
+
+.browse__main.is-split #pane-a {
+	flex: 0 0 var(--split);
+}
+
+.browse__main.is-split #pane-b {
+	flex: 1;
+	border-left: 1px solid var(--line);
+}
+
+/* Each pane owns a sidebar, so vertical tabs stay vertical in both panes and
+   the horizontal strips stay hidden - no tab list ever appears twice. */
+
+/*
+ * Clicking anywhere in a pane - the page body included - focuses it, and its
+ * tabs light up so you can see which half the keyboard is talking to.
+ */
+.browse__main.is-split .browse__pane:not(.is-focused) .tabstrip,
+.browse__main.is-split .browse__pane:not(.is-focused) .proxy-header,
+.browse__main.is-split .browse__pane:not(.is-focused) .browse__side {
+	opacity: 0.55;
+	transition: opacity 0.25s var(--ease);
+}
+
+.browse__main.is-split .browse__pane.is-focused .tab.is-active,
+.browse__main.is-split .browse__pane.is-focused .side-tab.is-active {
+	background: rgb(var(--accent-rgb) / 0.12);
+	border-color: rgb(var(--accent-rgb) / 0.35);
+	color: var(--text);
+}
+
+.browse__main.is-split .browse__pane.is-focused .address-field {
+	border-color: rgb(var(--accent-rgb) / 0.4);
+}
+
+.pane-divider {
+	position: relative;
+	z-index: 5;
+	width: 9px;
+	margin: 0 -4px;
+	flex-shrink: 0;
+	cursor: col-resize;
+	touch-action: none;
+	display: none;
+}
+
+.browse__main.is-split .pane-divider {
+	display: block;
+}
+
+.pane-divider::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 4px;
+	width: 1px;
+	background: transparent;
+	transition: background 0.2s var(--ease);
+}
+
+.pane-divider:hover::before,
+.browse__main.is-resizing .pane-divider::before {
+	background: var(--accent);
+	box-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.5);
+}
+
+/* Frames eat the pointer once it crosses into them mid-drag. */
+.browse__main.is-resizing .tab-frame {
+	pointer-events: none;
+}
+
+#sj-frame-wrapper-b {
+	position: relative;
+	flex: 1 1 auto;
+	min-height: 0;
+	border-top: 1px solid var(--line);
+	background: var(--bg-2);
+	overflow: hidden;
+}
+
+.pane-blank {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding: 2rem;
+	text-align: center;
+	font-size: 0.82rem;
+	color: var(--text-mute);
+}
+
+#sj-split.on {
+	background: var(--accent-low);
+	color: var(--accent);
+}
+
+/* ── Sidebar slims to icons while split, to give the panes the room ── */
+html.split-view .browse__side {
+	width: 58px;
+	/* Flex items won't shrink past their min-content size without this. */
+	min-width: 0;
+	padding-left: 0.4rem;
+	padding-right: 0.4rem;
+}
+
+html.split-view .side-tabs__head,
+html.split-view .side-tab .tab__title,
+html.split-view .side-tab .tab__close,
+html.split-view .side-tabs__new span {
+	display: none;
+}
+
+html.split-view .side-tab,
+html.split-view .side-tabs__new {
+	justify-content: center;
+	padding: 0.5rem 0;
+}
+
+#sj-error-panel {
+	position: absolute;
+	inset: 0;
+	z-index: 16;
+	display: grid;
+	place-items: center;
+	padding: 2rem;
+	background: var(--bg-2);
+}
+
+.page-error {
+	max-width: 460px;
+	text-align: center;
+	animation: pop-up 0.5s var(--spring) both;
+}
+
+.page-error__icon {
+	display: grid;
+	place-items: center;
+	width: 58px;
+	height: 58px;
+	margin: 0 auto 1.1rem;
+	border-radius: var(--r-lg);
+	background: rgb(255 90 70 / 0.1);
+	border: 1px solid rgb(255 90 70 / 0.26);
+	color: #ff9d86;
+}
+
+.page-error__icon .lucide {
+	width: 27px;
+	height: 27px;
+}
+
+#sj-error {
+	margin: 0 0 0.5rem;
+	font-size: 1.15rem;
+	font-weight: 740;
+	letter-spacing: -0.02em;
+	color: var(--text);
+}
+
+#sj-error-code {
+	margin: 0;
+	font-size: 0.84rem;
+	line-height: 1.6;
+	color: var(--text-dim);
+	overflow-wrap: anywhere;
+}
+
+.page-error__actions {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 1.4rem;
+}
+
+/* ── New tab page ──────────────────────────────────────────────── */
+.newtab {
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	padding: 2rem 1.5rem 4rem;
+	background:
+		radial-gradient(
+			700px 380px at 50% 12%,
+			rgb(var(--accent-rgb) / 0.09),
+			transparent 70%
+		),
+		var(--bg-2);
+	overflow-y: auto;
+}
+
+.newtab__brand {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.5rem;
+	animation: nt-in 0.6s var(--ease) both;
+}
+
+.newtab__logo {
+	width: 54px;
+	height: 54px;
+	filter: drop-shadow(0 0 22px var(--accent-glow));
+}
+
+.newtab__word {
+	margin: 0;
+	font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+	font-weight: 800;
+	letter-spacing: -0.035em;
+	background: linear-gradient(120deg, var(--text), var(--accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.newtab__tagline {
+	margin: 0;
+	font-size: 0.82rem;
+	color: var(--text-mute);
+	letter-spacing: 0.02em;
+}
+
+.newtab__searchwrap {
+	position: relative;
+	z-index: 5;
+	width: min(620px, 100%);
+	animation: nt-in 0.6s 0.06s var(--ease) both;
+}
+
+.newtab__field {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.newtab__icon {
+	position: absolute;
+	left: 1.1rem;
+	width: 18px;
+	height: 18px;
+	color: var(--text-mute);
+	pointer-events: none;
+	transition: color 0.2s var(--ease);
+}
+
+.newtab__field:focus-within .newtab__icon {
+	color: var(--accent);
+}
+
+.newtab__input {
+	width: 100%;
+	height: 54px;
+	padding: 0 3.6rem 0 2.9rem;
+	border: 1px solid var(--line-2);
+	border-radius: var(--r-lg);
+	background: rgb(255 255 255 / 0.05);
+	color: var(--text);
+	font: inherit;
+	font-size: 1rem;
+	outline: none;
+	box-shadow: 0 16px 40px rgb(0 0 0 / 0.35);
+	transition:
+		border-color 0.25s var(--ease),
+		box-shadow 0.3s var(--ease),
+		background 0.25s var(--ease);
+}
+
+.newtab__input::placeholder {
+	color: var(--text-mute);
+}
+
+.newtab__input:focus {
+	border-color: rgb(var(--accent-rgb) / 0.5);
+	background: rgb(255 255 255 / 0.07);
+	box-shadow:
+		0 16px 44px rgb(0 0 0 / 0.4),
+		0 0 0 4px rgb(var(--accent-rgb) / 0.1);
+}
+
+.newtab__go {
+	position: absolute;
+	right: 0.5rem;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: var(--r-sm);
+	background: linear-gradient(140deg, var(--accent-hi), var(--accent));
+	color: var(--accent-ink);
+	cursor: pointer;
+	transition:
+		filter 0.2s var(--ease),
+		transform 0.3s var(--spring);
+}
+
+.newtab__go:hover {
+	filter: brightness(1.07);
+	transform: scale(1.05);
+}
+
+.newtab__go .lucide {
+	width: 17px;
+	height: 17px;
+}
+
+/* Suggestions render directly under the field. */
+.newtab .suggest-list {
+	top: calc(100% + 10px);
+	border-radius: var(--r-lg);
+	padding: 0.35rem;
+}
+
+.newtab__links {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.5rem;
+	animation: nt-in 0.6s 0.12s var(--ease) both;
+}
+
+.newtab__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.45rem;
+	padding: 0.55rem 0.95rem;
+	border: 1px solid var(--line);
+	border-radius: var(--r-sm);
+	background: rgb(255 255 255 / 0.04);
+	color: var(--text-dim);
+	font: inherit;
+	font-size: 0.79rem;
+	font-weight: 620;
+	cursor: pointer;
+	text-decoration: none;
+	transition:
+		background 0.2s var(--ease),
+		color 0.2s var(--ease),
+		transform 0.3s var(--spring),
+		border-color 0.2s var(--ease);
+}
+
+.newtab__link:hover {
+	background: rgb(255 255 255 / 0.08);
+	border-color: rgb(var(--accent-rgb) / 0.3);
+	color: var(--text);
+	transform: translateY(-2px);
+}
+
+.newtab__link .lucide {
+	width: 15px;
+	height: 15px;
+	color: var(--accent);
+}
+
+@keyframes nt-in {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+}
+
+@media (max-width: 720px) {
+	.browse__side {
+		width: 180px;
+	}
+
+	.tab {
+		flex-basis: 150px;
+	}
+}
+
+/* ══ New tab: quieter, squarer, less template ═══════════════════ */
+.newtab {
+	gap: 1.15rem;
+	background:
+		radial-gradient(
+			760px 300px at 50% 0%,
+			rgb(var(--accent-rgb) / 0.05),
+			transparent 72%
+		),
+		var(--bg-2);
+}
+
+.newtab__brand {
+	gap: 0.75rem;
+	margin-bottom: 0.2rem;
+	align-items: center;
+	text-align: center;
+}
+
+.newtab__logo {
+	display: block;
+	margin: 0 auto;
+	height: 38px;
+	color: var(--accent);
+	filter: drop-shadow(0 0 18px rgb(var(--accent-rgb) / 0.25));
+}
+
+.newtab__logo .rise-logo {
+	height: 38px;
+	margin-left: -10px;
+}
+
+.newtab__tagline {
+	font-size: 0.79rem;
+	color: var(--text-mute);
+	letter-spacing: 0.01em;
+}
+
+.newtab__input {
+	height: 50px;
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.04);
+	border-color: var(--line-2);
+	box-shadow: 0 10px 26px rgb(0 0 0 / 0.28);
+	font-size: 0.95rem;
+	padding: 0 3.4rem 0 2.8rem;
+}
+
+.newtab__input:focus {
+	box-shadow:
+		0 12px 30px rgb(0 0 0 / 0.32),
+		0 0 0 3px rgb(var(--accent-rgb) / 0.1);
+}
+
+.newtab__go {
+	right: 0.4rem;
+	width: 36px;
+	height: 36px;
+	border-radius: var(--r-xs);
+}
+
+.newtab__go .lucide {
+	width: 15px;
+	height: 15px;
+}
+
+.newtab .suggest-list {
+	top: calc(100% + 8px);
+	border-radius: var(--r);
+	padding: 0.3rem;
+	z-index: 1200 !important;
+}
+
+.newtab__links {
+	position: relative;
+	z-index: 1;
+	gap: 0.4rem;
+	margin-top: 0.35rem;
+}
+
+.newtab__link {
+	flex-direction: column;
+	gap: 0.4rem;
+	width: 82px;
+	padding: 0.75rem 0.5rem 0.6rem;
+	border-radius: var(--r);
+	background: rgb(255 255 255 / 0.03);
+	font-size: 0.72rem;
+	font-weight: 620;
+}
+
+.newtab__link .lucide {
+	width: 18px;
+	height: 18px;
+}
+
+.newtab__link:hover {
+	transform: translateY(-3px);
+	background: rgb(255 255 255 / 0.07);
+}

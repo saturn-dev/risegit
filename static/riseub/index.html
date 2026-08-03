@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en" data-theme="mint">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>RiseUB</title>
+		<meta name="robots" content="noindex" />
+		<script>
+			(function () {
+				var host = location.hostname;
+				if (
+					location.protocol === "http:" &&
+					host !== "localhost" &&
+					host !== "127.0.0.1" &&
+					host !== "[::1]"
+				) {
+					location.replace(location.href.replace(/^http:/, "https:"));
+				}
+			})();
+		</script>
+		<link rel="stylesheet" href="./css/app.css" />
+		<link rel="stylesheet" href="./css/browser.css" />
+		<link rel="stylesheet" href="./css/media.css" />
+		<link rel="stylesheet" href="./css/settings.css" />
+		<link rel="stylesheet" href="./css/shell.css" />
+		<link rel="stylesheet" href="./css/profile.css" />
+		<link rel="stylesheet" href="./css/games.css" />
+		<script src="./cdn-runtime.js"></script>
+		<script src="./wisp-resolver.js"></script>
+		<script src="./bootstrap-init.js"></script>
+	</head>
+	<body>
+		<div id="panel-browse" class="panel browse">
+			<div class="browse__main" id="browse-panes">
+				<div class="browse__pane is-focused" id="pane-a">
+				<aside class="browse__side">
+					<div class="side-tabs__head">
+						<p class="side-tabs__label">Tabs</p>
+					</div>
+					<div class="side-tabs" id="side-tab-list"></div>
+					<button type="button" class="side-tabs__new" id="side-tab-new">
+						<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M5 12h14" />
+							<path d="M12 5v14" />
+						</svg>
+						<span>New tab</span>
+					</button>
+				</aside>
+
+				<div class="pane__main">
+				<div class="tabstrip">
+					<div class="tabstrip__list" id="tab-list"></div>
+					<button
+						type="button"
+						class="tabstrip__new"
+						id="tab-new"
+						title="New tab"
+						aria-label="New tab"
+					>
+						<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M5 12h14" />
+							<path d="M12 5v14" />
+						</svg>
+					</button>
+				</div>
+
+				<header class="proxy-header" id="sj-header">
+					<form id="sj-form" class="address-bar">
+						<button type="button" id="sj-back" title="Back" aria-label="Back">
+							<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M19 12H5" />
+								<path d="m12 19-7-7 7-7" />
+							</svg>
+						</button>
+						<button
+							type="button"
+							id="sj-forward"
+							title="Forward"
+							aria-label="Forward"
+						>
+							<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M5 12h14" />
+								<path d="m12 5 7 7-7 7" />
+							</svg>
+						</button>
+						<button type="button" id="sj-reload" title="Reload" aria-label="Reload">
+							<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+								<path d="M21 3v5h-5" />
+								<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+								<path d="M8 16H3v5" />
+							</svg>
+						</button>
+						<div class="address-field">
+							<svg
+								class="lucide address-field__icon"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+							>
+								<circle cx="11" cy="11" r="8" />
+								<path d="m21 21-4.3-4.3" />
+							</svg>
+							<input
+								id="sj-address"
+								class="address-input"
+								type="text"
+								spellcheck="false"
+								autocomplete="off"
+								placeholder="Search or enter a URL"
+								role="combobox"
+								aria-expanded="false"
+								aria-controls="sj-suggestions"
+							/>
+							<ul id="sj-suggestions" class="suggest-list" role="listbox" hidden></ul>
+						</div>
+						<button
+							type="button"
+							id="sj-split"
+							title="Split screen"
+							aria-label="Split screen"
+							aria-pressed="false"
+						>
+							<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+								<rect width="18" height="18" x="3" y="3" rx="2" />
+								<path d="M12 3v18" />
+							</svg>
+						</button>
+					</form>
+				</header>
+
+				<div id="sj-frame-wrapper">
+					<div class="newtab" id="newtab">
+						<div class="newtab__brand">
+							<span class="newtab__logo" id="newtab-logo"></span>
+							<p class="newtab__tagline">Search the web, or paste a link</p>
+						</div>
+
+						<div class="newtab__searchwrap">
+							<form class="newtab__field" id="newtab-form">
+								<svg class="lucide newtab__icon" viewBox="0 0 24 24" aria-hidden="true">
+									<circle cx="11" cy="11" r="8" />
+									<path d="m21 21-4.3-4.3" />
+								</svg>
+								<input
+									id="newtab-input"
+									class="newtab__input"
+									type="text"
+									spellcheck="false"
+									autocomplete="off"
+									placeholder="Search the web or type a URL"
+									role="combobox"
+									aria-expanded="false"
+									aria-controls="newtab-suggestions"
+								/>
+								<button type="submit" class="newtab__go" aria-label="Go">
+									<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+										<path d="M5 12h14" />
+										<path d="m12 5 7 7-7 7" />
+									</svg>
+								</button>
+								<ul
+									id="newtab-suggestions"
+									class="suggest-list"
+									role="listbox"
+									hidden
+								></ul>
+							</form>
+						</div>
+
+						<div class="newtab__links">
+							<button type="button" class="newtab__link" data-nav-to="/movies">
+								<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+									<rect width="18" height="18" x="3" y="3" rx="2" />
+									<path d="M7 3v18" />
+									<path d="M3 12h18" />
+									<path d="M17 3v18" />
+								</svg>
+								Movies
+							</button>
+							<button type="button" class="newtab__link" data-nav-to="/music">
+								<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M9 18V5l12-2v13" />
+									<circle cx="6" cy="18" r="3" />
+									<circle cx="18" cy="16" r="3" />
+								</svg>
+								Music
+							</button>
+							<button type="button" class="newtab__link" data-nav-to="/games">
+								<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+									<line x1="6" x2="10" y1="11" y2="11" />
+									<line x1="8" x2="8" y1="9" y2="13" />
+									<line x1="15" x2="15.01" y1="12" y2="12" />
+									<line x1="18" x2="18.01" y1="10" y2="10" />
+									<path
+										d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59c-.006.05-.01.1-.017.15C2.604 9.42 2 14.46 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258a2 2 0 0 0-.017-.151A4 4 0 0 0 17.32 5"
+									/>
+								</svg>
+								Games
+							</button>
+							<button type="button" class="newtab__link" data-nav-to="/ai">
+								<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M12 8V4H8" />
+									<rect width="16" height="12" x="4" y="8" rx="2" />
+									<path d="M2 14h2" />
+									<path d="M20 14h2" />
+									<path d="M15 13v2" />
+									<path d="M9 13v2" />
+								</svg>
+								AI
+							</button>
+						</div>
+					</div>
+
+					<div id="sj-error-panel" hidden>
+						<div class="page-error">
+							<div class="page-error__icon">
+								<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+									<circle cx="12" cy="12" r="10" />
+									<path d="M12 8v5" />
+									<path d="M12 17h.01" />
+								</svg>
+							</div>
+							<h2 id="sj-error">This page took a wrong turn</h2>
+							<p id="sj-error-code"></p>
+							<div class="page-error__actions">
+								<button type="button" class="btn-line btn-line--accent" id="sj-error-retry">
+									<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+										<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+										<path d="M21 3v5h-5" />
+										<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+										<path d="M8 16H3v5" />
+									</svg>
+									Try again
+								</button>
+								<button type="button" class="btn-line" id="sj-error-search">
+									<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+										<circle cx="11" cy="11" r="8" />
+										<path d="m21 21-4.3-4.3" />
+									</svg>
+									Search instead
+								</button>
+							</div>
+						</div>
+					</div>
+
+					<div id="sj-loader" class="proxy-loader" hidden aria-hidden="true">
+						<div class="proxy-loader__backdrop"></div>
+						<div class="proxy-loader__content">
+							<div class="proxy-loader__mark">
+								<svg class="proxy-loader__ring" viewBox="0 0 100 100" aria-hidden="true">
+									<defs>
+										<linearGradient
+											id="sj-loader-ring-grad"
+											x1="0%"
+											y1="0%"
+											x2="100%"
+											y2="100%"
+										>
+											<stop offset="0%" class="proxy-loader__grad-a" />
+											<stop offset="100%" class="proxy-loader__grad-b" />
+										</linearGradient>
+									</defs>
+									<circle
+										class="proxy-loader__ring-track"
+										cx="50"
+										cy="50"
+										r="44"
+										pathLength="100"
+									/>
+									<circle
+										id="sj-loader-ring-progress"
+										class="proxy-loader__ring-progress"
+										cx="50"
+										cy="50"
+										r="44"
+										pathLength="100"
+										stroke="url(#sj-loader-ring-grad)"
+									/>
+								</svg>
+								<svg
+									class="proxy-loader__logo"
+									viewBox="0 0 1080 1080"
+									aria-hidden="true"
+								>
+									<defs>
+										<linearGradient
+											id="sj-logo-shell"
+											x1="0%"
+											y1="0%"
+											x2="100%"
+											y2="100%"
+										>
+											<stop offset="0%" class="proxy-loader__logo-a" />
+											<stop offset="100%" class="proxy-loader__logo-b" />
+										</linearGradient>
+										<linearGradient
+											id="sj-logo-core"
+											gradientUnits="userSpaceOnUse"
+											x1="540"
+											y1="0"
+											x2="540"
+											y2="2160"
+										>
+											<stop offset="0%" class="proxy-loader__logo-a" />
+											<stop offset="35%" class="proxy-loader__logo-b" />
+											<stop offset="70%" class="proxy-loader__logo-a" />
+											<stop offset="100%" class="proxy-loader__logo-b" />
+											<animate
+												attributeName="y1"
+												from="0"
+												to="-1080"
+												dur="2.6s"
+												repeatCount="indefinite"
+												calcMode="linear"
+											/>
+											<animate
+												attributeName="y2"
+												from="2160"
+												to="1080"
+												dur="2.6s"
+												repeatCount="indefinite"
+												calcMode="linear"
+											/>
+										</linearGradient>
+									</defs>
+									<path
+										d="M789.94 459.5C795.8 460.97 801.94 461.18 807.85 462.6C828.13 467.46 848.21 473.99 865.89 485.56C902.17 509.31 929.28 547.93 937.66 590.7C944.37 624.97 943.94 658.6 943.94 693.5C943.94 726.83 943.94 760.17 943.94 793.5C943.94 827.83 943.94 862.17 943.94 896.5C943.94 914.71 944.85 935.77 931.57 950.07C917.06 965.69 887.69 962 868.5 962C827.83 962 787.17 962 746.5 962C734.17 962 721.83 962 709.5 962C701.34 962 693.27 962.58 685.5 960.37C684.22 953.36 684.97 945.66 684.97 938.5C684.97 932.26 684.4 925.71 685.05 919.5C685.29 917.12 685.98 914.93 686.06 912.5C686.76 890.54 684.99 868.43 686.24 846.5C704 843.86 722.47 849.22 739.74 842.25C756.19 835.61 773.93 818.06 777.68 800.29C779.08 793.64 779.2 787.29 779.2 780.5C779.2 771.78 778.53 763.34 775.42 755.08C772.37 747 767.65 741.66 762.55 734.93C754.5 724.31 746.27 714.01 737.73 703.81C724.8 688.36 712.47 672.2 700.1 656.38C696.91 652.29 693.14 648.69 689.85 644.68C680.82 633.67 672.01 622.44 663.17 611.3C645.23 588.68 626.99 566.17 608.8 543.72C594.49 526.07 587.85 518.78 565.26 512.4C561.96 511.47 558.98 510.27 555.5 510.11C540.16 509.4 524.25 512.96 511.53 522.02C504.6 526.96 498.76 534.41 493.37 540.86C489.45 545.54 484.92 549.83 480.93 554.44C474.18 562.24 466.92 569.82 459.87 577.34C458.25 579.07 456.11 580.21 454.49 581.99C446.23 591.05 438.12 600.36 430.14 609.65C426.3 614.12 421.56 617.77 417.68 622.2C394.82 648.27 370.74 673.35 348.03 699.54C340.92 707.74 333.15 715.34 326.1 723.61C319.95 730.84 313.41 736.94 309.14 745.64C295.11 774.24 303.14 808 327.92 827.57C330.02 829.24 331.73 831.06 334.12 832.37C341.37 836.34 349.2 839.98 357.54 840.65C369.46 841.59 384.12 838.52 395.42 841.5C395.42 848.27 394.36 854.81 394.29 861.5C394.13 876.16 394.29 890.84 394.29 905.5C394.29 912.09 394.84 918.94 394.25 925.5C394.07 927.54 393.4 929.46 393.25 931.5C392.57 940.99 394.62 951.23 392.5 960.46C387.29 963.14 380.26 962 374.5 962C361.5 962 348.5 962 335.5 962C289.5 962 243.5 962 197.5 962C190.09 962 181.84 963.02 174.52 961.82C172.03 961.42 169.6 960.11 167.11 959.49C156.96 956.98 148.12 951.91 143.09 942.35C133.79 924.67 137.03 901.84 137.03 882.5C137.03 843.17 137.03 803.83 137.03 764.5C137.03 619.5 137.03 474.5 137.03 329.5C137.03 261.83 137.03 194.17 137.03 126.5C137.03 110.85 136.31 95.03 137.99 79.5C139.02 69.92 142.12 58.94 150.19 52.68C166.41 40.09 187.01 42.06 206.5 42.06C242.5 42.06 278.5 42.06 314.5 42.06C404.83 42.06 495.17 42.06 585.5 42.06C658.66 42.06 740.93 44.67 799.31 95.16C838.49 129.05 852.31 175.01 858.89 224.51C859.33 227.82 858.9 231.18 859.21 234.49C861.06 254.34 860.17 274.55 860.17 294.5C860.16 341.7 859.74 400.52 823.95 436.45C814 446.43 802.34 453.09 789.94 459.5ZM426.37 273.31C426.37 327.38 426.37 381.44 426.37 435.5C436.25 436.58 446.55 435.84 456.5 435.84C474.83 435.84 493.17 435.84 511.5 435.84C527.23 435.84 546.76 435.53 559.69 425.16C568.66 417.97 573.27 405.51 575.34 394.67C577.38 383.92 577.36 373.46 577.36 362.5C577.36 337.39 581.11 295.15 555.79 279.71C542.8 271.79 526.06 272.69 511.5 272.69C492.83 272.69 474.17 272.69 455.5 272.69C446.05 272.69 435.6 271.49 426.37 273.31Z"
+										fill="url(#sj-logo-shell)"
+										fill-rule="evenodd"
+									/>
+									<path
+										d="M663.5 820.65C662.19 826.03 662.7 831.93 662.61 837.5C662.46 847.5 662.26 857.5 662.14 867.5C661.76 897.83 661.34 928.17 660.76 958.5C660.41 977.19 663.37 999.57 653.65 1016.18C641.47 1036.98 620.33 1035.65 599.5 1035.34C558.88 1034.73 518.25 1034.23 477.63 1033.52C453.14 1033.09 431.93 1034.16 420.14 1008.33C413.65 994.11 416.69 970.13 416.93 954.5C417.39 923.83 417.85 893.17 418.33 862.5C418.48 852.83 418.64 843.17 418.79 833.5C418.87 828.2 419.58 822.44 418.5 817.27C413.91 816.44 409.19 816.84 404.5 816.9C386.53 817.12 362.88 820.71 346.92 811.56C326.67 799.95 320.7 772.04 333.09 752.63C337.51 745.7 343.84 739.9 349.36 733.85C356.35 726.18 363.39 718.54 370.38 710.85C394.8 683.95 419.45 657.27 443.93 630.42C465.38 606.88 486.77 583.28 508.42 559.92C520.96 546.41 531.15 533.61 551.49 534.32C571.84 535.04 583.11 550.24 594.61 564.88C611.89 586.87 629.57 608.6 647.25 630.26C671.07 659.45 694.64 688.87 718.16 718.31C725.11 727.01 732.11 735.69 739.12 744.35C743.9 750.27 749.26 756.04 752.46 763.02C762.3 784.48 752.09 809.96 730.69 819.24C711.23 827.68 684.27 818.71 663.5 820.65Z"
+										fill="url(#sj-logo-core)"
+										fill-rule="evenodd"
+									/>
+								</svg>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				</div>
+
+				<div class="pane-divider" id="pane-divider" aria-hidden="true"></div>
+
+				<!-- Pane B: cloned from pane A the first time you split. -->
+				<div class="browse__pane" id="pane-b" hidden></div>
+				</div>
+			</div>
+
+		<div id="panel-media" class="view-stack" hidden></div>
+
+		<nav class="taskbar" id="app-taskbar" aria-label="Primary">
+			<span class="taskbar__indicator" aria-hidden="true"></span>
+			<a class="taskbar__item" href="/" data-nav data-label="Browse" aria-label="Browse">
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<circle cx="12" cy="12" r="10" />
+					<path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+					<path d="M2 12h20" />
+				</svg>
+			</a>
+			<a
+				class="taskbar__item"
+				href="/movies"
+				data-nav
+				data-label="Movies"
+				aria-label="Movies"
+			>
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<rect width="18" height="18" x="3" y="3" rx="2" />
+					<path d="M7 3v18" />
+					<path d="M3 7.5h4" />
+					<path d="M3 12h18" />
+					<path d="M3 16.5h4" />
+					<path d="M17 3v18" />
+					<path d="M17 7.5h4" />
+					<path d="M17 16.5h4" />
+				</svg>
+			</a>
+			<a
+				class="taskbar__item"
+				href="/music"
+				data-nav
+				data-label="Music"
+				aria-label="Music"
+			>
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M9 18V5l12-2v13" />
+					<circle cx="6" cy="18" r="3" />
+					<circle cx="18" cy="16" r="3" />
+				</svg>
+			</a>
+			<a
+				class="taskbar__item"
+				href="/games"
+				data-nav
+				data-label="Games"
+				aria-label="Games"
+			>
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<line x1="6" x2="10" y1="11" y2="11" />
+					<line x1="8" x2="8" y1="9" y2="13" />
+					<line x1="15" x2="15.01" y1="12" y2="12" />
+					<line x1="18" x2="18.01" y1="10" y2="10" />
+					<path
+						d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59c-.006.05-.01.1-.017.15C2.604 9.42 2 14.46 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258a2 2 0 0 0-.017-.151A4 4 0 0 0 17.32 5"
+					/>
+				</svg>
+			</a>
+			<a class="taskbar__item" href="/ai" data-nav data-label="AI Chat" aria-label="AI Chat">
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M12 8V4H8" />
+					<rect width="16" height="12" x="4" y="8" rx="2" />
+					<path d="M2 14h2" />
+					<path d="M20 14h2" />
+					<path d="M15 13v2" />
+					<path d="M9 13v2" />
+				</svg>
+			</a>
+			<span class="taskbar__sep" aria-hidden="true"></span>
+			<a
+				class="taskbar__item"
+				href="/settings"
+				data-nav
+				data-label="Settings"
+				aria-label="Settings"
+			>
+				<svg class="lucide" viewBox="0 0 24 24" aria-hidden="true">
+					<path
+						d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+					/>
+					<circle cx="12" cy="12" r="3" />
+				</svg>
+			</a>
+		</nav>
+
+		<script type="module" src="./js/app.js"></script>
+	</body>
+</html>
