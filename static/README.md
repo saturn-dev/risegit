@@ -1,35 +1,47 @@
 # RiseUB static embed
 
-**Do NOT open `index.html` directly** — jsDelivr/Wayground need the **SVG embed launcher** (same as Arctic).
+**Do NOT open `index.html` directly** — use the **SVG embed launcher** (Arctic method).
 
-## Correct URL (opens RiseUB — no external site)
-
-```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg
-```
-
-Optional: open a specific site on boot:
+## Correct URL
 
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/embed.svg?$io=https%3A%2F%2Fexample.com
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/riseub/embed.svg
 ```
 
-## How it works (Arctic method)
+If `@main` is stale on jsDelivr, pin the commit:
+
+```
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@COMMIT/static/riseub/embed.svg
+```
+
+Optional — open a site on boot:
+
+```
+.../static/riseub/embed.svg?$io=https%3A%2F%2Fexample.com
+```
+
+## How it works
 
 1. `embed.svg` loads on Wayground/jsDelivr
-2. SVG probes CDN, then sets `iframe.src` → `index.html?static=1`
-3. Full RiseUB app runs inside the iframe (modules, CSS, settings all work)
-4. Public wisp servers handle proxying — no VPS
+2. SVG iframes `static/riseub/index.html?static=1` from jsDelivr
+3. Full RiseUB runs inside the iframe (proxy, settings, games)
+4. Public wisp servers — no VPS
 
 ## Build & push
 
 ```bash
 node static/build-static.mjs
 git add static/
-git commit -m "Update embed launcher"
+git commit -m "Update static embed"
 git push
+```
+
+After push, purge cache if needed:
+
+```
+https://purge.jsdelivr.net/gh/saturn-dev/risegit@main/static/riseub/embed.svg
 ```
 
 ## Wayground
 
-Upload `static/embed.svg` — NOT index.html.
+Upload `static/riseub/embed.svg` — NOT index.html.

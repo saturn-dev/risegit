@@ -13,6 +13,7 @@ function patchIndex(html) {
 	return html
 		.replace(/href="\/css\//g, 'href="./css/')
 		.replace(/src="\/js\//g, 'src="./js/')
+		.replace(/href="\/([^"]*)"/g, (_, rest) => (rest ? `href="#/${rest}"` : 'href="#/"'))
 		.replace(
 			'<script src="/bootstrap-init.js"></script>',
 			'<script src="./cdn-runtime.js"></script>\n\t\t<script src="./wisp-resolver.js"></script>\n\t\t<script src="./bootstrap-init.js"></script>'
@@ -20,10 +21,11 @@ function patchIndex(html) {
 }
 
 function patchAppJs(code) {
-	if (code.includes("__RISEUB_EMBED_TARGET")) return code;
-	return code.replace(
-		"if (proxyTarget) {\n\t\t\t\ttabs.create({ url: proxyTarget });\n\t\t\t\treturn;\n\t\t\t}",
-		`const embedTarget = window.__RISEUB_EMBED_TARGET || "";
+	let out = code;
+	if (!out.includes("__RISEUB_EMBED_TARGET")) {
+		out = out.replace(
+			"if (proxyTarget) {\n\t\t\t\ttabs.create({ url: proxyTarget });\n\t\t\t\treturn;\n\t\t\t}",
+			`const embedTarget = window.__RISEUB_EMBED_TARGET || "";
 \t\t\tif (embedTarget) {
 \t\t\t\ttabs.create({ url: embedTarget });
 \t\t\t\treturn;
@@ -32,7 +34,50 @@ function patchAppJs(code) {
 \t\t\t\ttabs.create({ url: proxyTarget });
 \t\t\t\treturn;
 \t\t\t}`
-	);
+		);
+	}
+	if (!out.includes("function appPath()")) {
+		out = out
+			.replace(
+				"function route() {\n\tlet path = location.pathname.replace(/\\/+$/, \"\") || \"/\";",
+				`function appPath() {
+\tif (!window.__RISEUB_STATIC) return location.pathname.replace(/\\/+$/, "") || "/";
+\tconst h = location.hash.replace(/^#/, "").trim();
+\tif (h.startsWith("/")) return h.replace(/\\/+$/, "") || "/";
+\treturn "/";
+}
+
+function route() {
+\tlet path = appPath();`
+			)
+			.replace(
+				"function navigateTo(href) {\n\tif (href === location.pathname) return;\n\thistory.pushState(null, \"\", href);\n\troute();\n}",
+				`function navigateTo(href) {
+\tif (window.__RISEUB_STATIC) {
+\t\tif (href === appPath()) return;
+\t\thistory.pushState(null, "", "#" + href);
+\t\troute();
+\t\treturn;
+\t}
+\tif (href === location.pathname) return;
+\thistory.pushState(null, "", href);
+\troute();
+}`
+			)
+			.replace(
+				"if (blank && location.pathname === \"/\")",
+				"if (blank && appPath() === \"/\")"
+			)
+			.replace(
+				"if (location.pathname !== \"/\") navigateTo(\"/\");",
+				"if (appPath() !== \"/\") navigateTo(\"/\");"
+			)
+			.replace(
+				"window.addEventListener(\"popstate\", route);",
+				"window.addEventListener(\"popstate\", route);\nwindow.addEventListener(\"hashchange\", route);"
+			);
+	}
+	return out;
 }
 
 function patchAuthJs(code) {

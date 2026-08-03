@@ -78,7 +78,7 @@ tabs.onChange((tab) => {
 		errorPanel.hidden = true;
 	}
 
-	if (blank && location.pathname === "/") {
+	if (blank && appPath() === "/") {
 		requestAnimationFrame(() => newtabInput.focus({ preventScroll: true }));
 	}
 });
@@ -139,7 +139,7 @@ form.addEventListener("submit", (e) => {
 	e.preventDefault();
 	omnibox.hideSuggestions();
 	address.blur();
-	if (location.pathname !== "/") navigateTo("/");
+	if (appPath() !== "/") navigateTo("/");
 	go(address.value);
 });
 
@@ -509,8 +509,15 @@ function syncTaskbar() {
 	taskbar.classList.add("is-ready");
 }
 
+function appPath() {
+	if (!window.__RISEUB_STATIC) return location.pathname.replace(/\/+$/, "") || "/";
+	const h = location.hash.replace(/^#/, "").trim();
+	if (h.startsWith("/")) return h.replace(/\/+$/, "") || "/";
+	return "/";
+}
+
 function route() {
-	let path = location.pathname.replace(/\/+$/, "") || "/";
+	let path = appPath();
 	if (path !== "/" && !VIEWS[path]) path = "/";
 
 	navLinks.forEach((a) => {
@@ -541,6 +548,12 @@ function route() {
 }
 
 function navigateTo(href) {
+	if (window.__RISEUB_STATIC) {
+		if (href === appPath()) return;
+		history.pushState(null, "", "#" + href);
+		route();
+		return;
+	}
 	if (href === location.pathname) return;
 	history.pushState(null, "", href);
 	route();
@@ -558,6 +571,7 @@ document.querySelectorAll("[data-nav-to]").forEach((btn) => {
 });
 
 window.addEventListener("popstate", route);
+window.addEventListener("hashchange", route);
 window.addEventListener("resize", syncTaskbar);
 document.fonts?.ready.then(syncTaskbar);
 onPrefsChange(() => {
