@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- rise-static v2 quizizz -->
+<!-- rise-static v2.1 quizizz -->
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
 <script type="text/javascript"><![CDATA[
 (function(){
@@ -12,7 +12,7 @@
   var doc=topWin.document||document;
   if(doc.getElementById("rise-quizizz-frame"))return;
   function mount(src){var f=doc.createElement("iframe");f.id="rise-quizizz-frame";f.src=src;f.setAttribute("allow","autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture");f.style.cssText="position:fixed;inset:0;width:100%;height:100%;border:0;margin:0;padding:0;z-index:2147483647;background:#0a0c0b";(doc.body||doc.documentElement).appendChild(f);}
-  function tryOrigin(i){if(i>=origins.length){mount(origins[0]+"/embed.svg"+qs("v=v2"));return}var origin=origins[i].replace(/\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},6000);fetch(origin+"/rise-app.js?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){mount(origin+"/embed.svg"+qs("v=v2"))}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
+  function tryOrigin(i){if(i>=origins.length){mount(origins[0]+"/embed.svg"+qs("v=v2.1"));return}var origin=origins[i].replace(/\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},6000);fetch(origin+"/rise-app.js?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){mount(origin+"/embed.svg"+qs("v=v2.1"))}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
   tryOrigin(0);
 })();
 ]]></script>

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
  * Build Rise SVG launchers:
- * - embed.svg / svg.svg — full launcher (foreignObject + srcdoc)
+ * - embed.svg / svg.svg — fetches index.html from CDN at runtime (no stale base64)
  * - quizizz.svg — Quizizz-safe (root script only, no foreignObject)
  */
-import { cpSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -13,7 +13,7 @@ const GITHUB = "saturn-dev/risegit";
 const BRANCH = "main";
 const ROOT_SUBPATH = "arctic-static-main";
 const EXAMPLE_SUBPATH = `${ROOT_SUBPATH}/example`;
-const BUILD_VERSION = "v2";
+const BUILD_VERSION = "v2.1";
 
 function cdnOrigins() {
 	const base = `gh/${GITHUB}@${BRANCH}/${ROOT_SUBPATH}`;
@@ -35,20 +35,19 @@ function embedOrigins() {
 	];
 }
 
-const htmlB64 = Buffer.from(readFileSync(join(__dirname, "index.html"), "utf8")).toString("base64");
 const originsJson = JSON.stringify(cdnOrigins());
 const embedOriginsJson = JSON.stringify(embedOrigins());
 
-const embedSvg = `<!-- rise-static ${BUILD_VERSION} -->
+const embedSvg = `<!-- rise-static ${BUILD_VERSION} live-fetch -->
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="position:fixed;top:0;left:0">
   <foreignObject x="0" y="0" width="100%" height="100%">
-    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0a0c0b">
+    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0a0c0b;color:#7ff0c4;font-family:Segoe UI,system-ui,sans-serif">
+      <div id="rise-boot" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center">Loading Rise…</div>
       <iframe id="rise-embed-frame" allow="autoplay; fullscreen; clipboard-read; clipboard-write; encrypted-media; picture-in-picture" style="position:fixed;inset:0;width:100%;height:100%;border:none"></iframe>
       <script><![CDATA[
         (function(){
-          function dec(b){var s=atob(b);var a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return new TextDecoder().decode(a);}
           var frame=document.getElementById("rise-embed-frame");
-          var html=dec(${JSON.stringify(htmlB64)});
+          var boot=document.getElementById("rise-boot");
           var base=new URL("./",location.href).href.replace(/\\/+$/,"");
           var origins=${originsJson};
           var p=new URLSearchParams(location.search);
@@ -57,12 +56,20 @@ const embedSvg = `<!-- rise-static ${BUILD_VERSION} -->
           var target=h?targetOf(h):(p.get("$io")||p.get("url")||"");
           window.addEventListener("message",function(e){if(frame&&e.source===frame.contentWindow&&window.parent!==window){window.parent.postMessage(e.data,"*");}});
           if(origins.indexOf(base)<0)origins.push(base);
-          function fallback(origin){
+          function mount(origin){
             origin=origin.replace(/\\/+$/,"");
             var head='<base href="'+origin+'/"/>'+'<'+'script>window.__RISE_EMBED_TARGET='+JSON.stringify(target)+';window.__RISE_BUILD=${JSON.stringify(BUILD_VERSION)};<'+'/script>';
-            frame.srcdoc=html.replace("<head>","<head>"+head);
+            var bust="z="+Date.now();
+            fetch(origin+"/example/index.html?"+bust,{cache:"no-store",mode:"cors"})
+              .then(function(r){if(!r.ok)throw new Error("html "+r.status);return r.text();})
+              .then(function(html){
+                if(!/rise-top/.test(html))throw new Error("unexpected html");
+                frame.srcdoc=html.replace("<head>","<head>"+head);
+                if(boot)boot.style.display="none";
+              })
+              .catch(function(){tryOrigin(origins.indexOf(origin)+1);});
           }
-          function tryOrigin(i){if(i>=origins.length){fallback(base);return}var origin=origins[i].replace(/\\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);fetch(origin+"/assets/resolver-kJ4LsXVq.js?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){fallback(origin)}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
+          function tryOrigin(i){if(i>=origins.length){if(boot)boot.textContent="Could not load Rise";return}var origin=origins[i].replace(/\\/+$/,"");var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);fetch(origin+"/assets/resolver-kJ4LsXVq.js?z="+Date.now(),{cache:"no-store",mode:"cors",signal:c.signal}).then(function(r){clearTimeout(t);if(r.ok){mount(origin)}else{tryOrigin(i+1)}}).catch(function(){clearTimeout(t);tryOrigin(i+1)})}
           tryOrigin(0);
         })();
       ]]></script>
@@ -108,4 +115,3 @@ writeFileSync(join(__dirname, "..", "..", "embed.svg"), embedSvg, "utf8");
 
 console.log(`Built ${BUILD_VERSION}: embed.svg (${(embedSvg.length / 1024).toFixed(1)} KB), quizizz.svg (${(quizizzSvg.length / 1024).toFixed(1)} KB)`);
 for (const o of embedOrigins()) console.log(`  ${o}/embed.svg`);
-console.log(`Quizizz: ${embedOrigins()[0]}/quizizz.svg`);
