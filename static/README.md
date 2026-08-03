@@ -2,6 +2,8 @@
 
 The proxy runs **fully from GitHub CDN** (`cdn.jsdelivr.net`), same as Arctic. No VPS required for embeds.
 
+Repo: [saturn-dev/risegit](https://github.com/saturn-dev/risegit)
+
 ## Quick start
 
 ```bash

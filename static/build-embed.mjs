@@ -3,7 +3,7 @@
  * Build Arctic-style CDN embed SVGs for RiseUB (jsDelivr / Wayground).
  * The proxy runs fully from GitHub CDN — no VPS iframe.
  */
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomBytes } from "node:crypto";
