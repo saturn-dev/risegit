@@ -63,7 +63,8 @@ html, body { margin: 0; height: 100%; overflow: hidden; font-family: "Segoe UI",
 .chip.on { border-color: rgb(var(--accent-rgb) / 0.35); background: var(--accent-low); color: var(--accent-hi); }
 .btn--primary { background: linear-gradient(140deg, var(--accent-hi), var(--accent)); color: var(--accent-ink); border-color: transparent; }
 @keyframes spin { to { transform: rotate(360deg); } }
-html[data-taskbar="bar"] body { padding-bottom: var(--taskbar-h); }
+.tabstrip { display: flex !important; visibility: visible !important; min-height: 42px; }
+.tabstrip__list { min-height: 36px; }
 `,
 ].join("\n");
 

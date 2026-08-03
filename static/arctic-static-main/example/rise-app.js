@@ -66,6 +66,8 @@ const moviesSearchInput = document.getElementById("movies-search");
 const moviesTopbar = document.getElementById("movies-topbar");
 
 let router;
+let routerReady = false;
+let pendingBrowse = "";
 let browseToken = 0;
 let moviesToken = 0;
 let moviesLoaded = false;
@@ -136,16 +138,19 @@ function activeTab() {
 }
 
 function renderTabs() {
+	if (!tabList) return;
 	tabList.innerHTML = "";
 	for (const tab of tabs) {
-		const el = document.createElement("button");
-		el.type = "button";
+		const el = document.createElement("div");
 		el.className = `tab${tab.id === activeTabId ? " is-active" : ""}`;
-		el.innerHTML = `<span class="tab__title">${esc(tab.title)}</span>${tabs.length > 1 ? `<span class="tab__close" data-close="${tab.id}">×</span>` : ""}`;
+		el.dataset.tabId = String(tab.id);
+		el.setAttribute("role", "button");
+		el.tabIndex = 0;
+		el.innerHTML = `<span class="tab__fav" aria-hidden="true">🌐</span><span class="tab__title">${esc(tab.title)}</span>${tabs.length > 1 ? `<button type="button" class="tab__close" data-close="${tab.id}" aria-label="Close tab">×</button>` : ""}`;
 		el.addEventListener("click", (e) => {
 			if (e.target.closest("[data-close]")) return;
 			activeTabId = tab.id;
-			addressInput.value = tab.url.replace(/^https?:\/\//, "");
+			addressInput && (addressInput.value = tab.url.replace(/^https?:\/\//, ""));
 			renderTabs();
 			if (tab.url) navigateBrowse(tab.url, { fromTab: true });
 			else showHome();
@@ -175,22 +180,25 @@ function showHome() {
 
 function switchView(name) {
 	activeView = name;
-	Object.entries(views).forEach(([key, el) => {
-		if (!el) return;
-		const on = key === name;
-		el.hidden = !on;
-		el.classList.toggle("on", on);
-	});
-	document.querySelectorAll("[data-view-nav]").forEach((btn) => {
-		btn.classList.toggle("on", btn.dataset.viewNav === name);
-	});
-	syncTaskbarIndicator();
+	if (window.__riseSwitchView) window.__riseSwitchView(name);
+	else {
+		Object.entries(views).forEach(([key, el) => {
+			if (!el) return;
+			const on = key === name;
+			el.hidden = !on;
+			el.classList.toggle("on", on);
+		});
+		document.querySelectorAll("[data-view-nav]").forEach((btn) => {
+			btn.classList.toggle("on", btn.dataset.viewNav === name);
+		});
+		syncTaskbarIndicator();
+	}
 	if (name === "movies" && !moviesLoaded) {
 		moviesLoaded = true;
 		fillServerSelect();
 		loadMovies();
 	}
-	if (name === "settings" && !views.settings.childElementCount) initSettings(views.settings);
+	if (name === "settings" && views.settings && !views.settings.childElementCount) initSettings(views.settings);
 	if (name !== "movies" && player) closePlayer(false);
 }
 
@@ -208,9 +216,17 @@ async function bootProxy() {
 }
 
 async function navigateBrowse(url, opts = {}) {
-	const token = ++browseToken;
 	const target = normalizeUrl(url);
 	if (!target) return showHome();
+	if (!router) {
+		pendingBrowse = target;
+		browseHome.hidden = true;
+		browseStage.hidden = false;
+		setStep(browseStep, "starting proxy…");
+		return;
+	}
+
+	const token = ++browseToken;
 
 	const tab = activeTab();
 	if (!opts.fromTab) {
@@ -445,24 +461,33 @@ document.getElementById("tab-new")?.addEventListener("click", () => {
 	activeTabId = tab.id;
 	renderTabs();
 	showHome();
-	addressInput.value = "";
+	if (addressInput) addressInput.value = "";
 });
 
 document.querySelectorAll("[data-view-nav]").forEach((btn) => {
-	btn.addEventListener("click", () => switchView(btn.dataset.viewNav));
+	btn.addEventListener("click", (e) => {
+		e.preventDefault();
+		switchView(btn.dataset.viewNav);
+	});
 });
 
-addressForm.addEventListener("submit", (e) => {
+addressForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
 	switchView("browse");
-	navigateBrowse(addressInput.value);
+	navigateBrowse(addressInput?.value || "");
 });
 
-newtabForm.addEventListener("submit", (e) => {
+newtabForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
 	switchView("browse");
-	navigateBrowse(newtabInput.value);
+	navigateBrowse(newtabInput?.value || "");
 });
+
+window.__riseNavigate = (q) => {
+	switchView("browse");
+	navigateBrowse(q || addressInput?.value || newtabInput?.value || "");
+};
+window.__riseSearchMovies = (q) => searchMovies(q || moviesSearchInput?.value || "");
 
 document.getElementById("nav-reload")?.addEventListener("click", () => {
 	const tab = activeTab();
@@ -481,9 +506,10 @@ document.getElementById("nav-forward")?.addEventListener("click", () => {
 	} catch {}
 });
 
-moviesSearchForm.addEventListener("submit", (e) => {
+moviesSearchForm?.addEventListener("submit", (e) => {
 	e.preventDefault();
-	searchMovies(moviesSearchInput.value);
+	switchView("movies");
+	searchMovies(moviesSearchInput?.value || "");
 });
 
 document.getElementById("browse-retry")?.addEventListener("click", showHome);
@@ -523,9 +549,16 @@ initRuntime()
 	})
 	.then(() => bootProxy())
 	.then(() => {
+		routerReady = true;
+		if (pendingBrowse) {
+			const url = pendingBrowse;
+			pendingBrowse = "";
+			navigateBrowse(url);
+			return;
+		}
 		const boot = targetFromEnv();
 		if (boot) {
-			addressInput.value = boot.replace(/^https?:\/\//, "");
+			if (addressInput) addressInput.value = boot.replace(/^https?:\/\//, "");
 			navigateBrowse(boot);
 		}
 	})
