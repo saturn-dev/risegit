@@ -1,40 +1,41 @@
 # Rise static (Arctic backend)
 
-Uses **arctic-static-main** proxy backend with a **Rise-themed UI**.
-
-## Files (in `arctic-static-main/example/`)
-
-| File | Purpose |
-|------|---------|
-| `index.html` | Rise app shell (browse + movies) |
-| `rise-app.js` | App logic, uses Arctic resolver/router |
-| `rise.css` | Rise mint theme |
-| `embed.svg` | SVG launcher for any site (Wayground, jsDelivr, etc.) |
-| `svg.svg` | Same as embed.svg (upload either) |
+Rise-themed UI using the **arctic-static-main** proxy stack.
 
 ## CDN URLs
 
+**Embed (use this on any site):**
 ```
-https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/static/arctic-static-main/example/embed.svg
+https://cdn.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
 ```
 
 Open a site on boot:
-
 ```
 .../embed.svg?$io=https%3A%2F%2Froblox.com
 ```
 
-## Rebuild after edits
+Proxy assets (`resolver`, `sw.js`, `vendor/`) live at repo root `arctic-static-main/` — the embed sets `<base href>` there automatically.
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `static/arctic-static-main/example/index.html` | Rise UI (edit here) |
+| `static/arctic-static-main/example/rise-app.js` | Browse + movies logic |
+| `static/arctic-static-main/example/rise.css` | Mint theme |
+| `static/arctic-static-main/example/embed.svg` | SVG launcher |
+
+`build.mjs` syncs to `arctic-static-main/example/` for GitHub/jsDelivr.
+
+## Rebuild
 
 ```bash
 node static/arctic-static-main/example/build.mjs
-git add static/arctic-static-main/example/
+git add static/arctic-static-main/example/ arctic-static-main/example/
 git push
 ```
 
-## How it works
-
-1. `embed.svg` decodes `index.html` via srcdoc (Arctic method — avoids jsDelivr `text/plain` HTML bug)
-2. Injects `<base href="CDN/example/">` so assets load from jsDelivr
-3. `rise-app.js` imports Arctic `resolver-kJ4LsXVq.js` for wisp + scramjet proxy
-4. Movies use TMDB + vidking embed, proxied through the same backend
+Purge cache if needed:
+```
+https://purge.jsdelivr.net/gh/saturn-dev/risegit@main/arctic-static-main/example/embed.svg
+```
